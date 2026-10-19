@@ -1,4 +1,4 @@
-/* Layout */
+/* Layout  -----------------------------------------------------------  */
 * {
   box-sizing: border-box;
 }
@@ -21,6 +21,48 @@ body {
   min-width: 0;
 }
 
+/* Sidebar ----------------------------------------------------------- */
+/* Sidebar colour */
+.sidebar {
+  background-color: #1C1C1E;
+  padding: 16px;
+}
+
+/* Brand name styling */
+.brand {
+  color: white;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+.brand span {
+  color: #F26B1D;
+}
+
+/* Removing bullet points and default padding */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+/* Styling sidebar links */
+.sidebar a {
+  display: block;
+  color: #C9C9CE;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+/* Changes link colours when the mouse hovers over them */
+.sidebar a:hover {
+  background-color: #2A2A2D;
+  color: white;
+}
+
+/* Highlights the active sidebar link orange */
+.sidebar a.active {
+  background-color: #F26B1D;
+  color: white;
+  font-weight: bold;
+}
 
 /* On screens 900px or wider, a 230px sidebar is added, with a main column */
 @media (min-width: 900px) {
@@ -28,3 +70,5 @@ body {
     grid-template-columns: 230px 1fr;
   }
 }
+
+
