@@ -1,20 +1,30 @@
-/* Brand colours */
-:root {
-  --orange: #F26B1D;
-  --orange-light: #FDEBDF;
-  --dark: #1C1C1E;
-  --sidebar-text: #C9C9CE;
-  --page-bg: #F6F6F7;
-  --border: #E5E7EB;
-  --muted: #6B7280;
-}
-
-/* Width and height */
+/* Layout */
 * {
   box-sizing: border-box;
 }
 
+/* Background colour and font */
 body {
-  background-color: var(--page-bg);
+  background-color: #F6F6F7;
   font-family: Arial, sans-serif;
+}
+
+/* One column grid */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+}
+
+/* Prevent overflowing */
+.content {
+  min-width: 0;
+}
+
+
+/* On screens 900px or wider, a 230px sidebar is added, with a main column */
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 230px 1fr;
+  }
 }
