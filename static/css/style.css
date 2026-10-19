@@ -64,7 +64,42 @@ body {
   font-weight: bold;
 }
 
-/* On screens 900px or wider, a 230px sidebar is added, with a main column */
+/* Top bar styling --------------------------------------------- */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  border-bottom: 1px solid #E5E7EB;
+  padding: 12px 24px;
+  color: #6B7280;
+}
+
+
+/* Text styling on the page ---------------------------------------- */
+/* Adds padding for the main content */
+main {
+  padding: 24px;
+}
+/* Increasing the page title size and making it bold */
+.page-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+/* Styling the subtitle in grey and adding space below */
+.page-subtitle {
+  color: #6B7280;
+  margin-bottom: 24px;
+}
+/* Adding spacing and styling the footer text */
+footer {
+  padding: 16px 24px;
+  color: #6B7280;
+  font-size: 0.8rem;
+}
+
+/* On screens 900px or wider, a 230px sidebar is added -------------------- */
 @media (min-width: 900px) {
   .layout {
     grid-template-columns: 230px 1fr;
