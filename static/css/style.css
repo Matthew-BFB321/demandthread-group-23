@@ -1,3 +1,20 @@
-h1 {
-  color: #F26B1D;
+/* Brand colours */
+:root {
+  --orange: #F26B1D;
+  --orange-light: #FDEBDF;
+  --dark: #1C1C1E;
+  --sidebar-text: #C9C9CE;
+  --page-bg: #F6F6F7;
+  --border: #E5E7EB;
+  --muted: #6B7280;
+}
+
+/* Width and height */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--page-bg);
+  font-family: Arial, sans-serif;
 }
