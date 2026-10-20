@@ -34,6 +34,73 @@
       <main>
         <h1 class="page-title">Sales and Inventory</h1>
         <p class="page-subtitle">Sales and stock across all stores and the online channel.</p>
+        <!-- Inserting a table with product and sales data -->
+        <section class="card-box">
+          <h2>All products</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Sold (7 days)</th>
+                  <th>Change</th>
+                  <th>In stock</th>
+                  <th>On order</th>
+                  <th>Days of cover</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>DT-1001</td>
+                  <td>Denim Jacket</td>
+                  <td>Outerwear</td>
+                  <td>380</td>
+                  <td class="text-success">+15%</td>
+                  <td>270</td>
+                  <td>0</td>
+                  <td>5</td>
+                  <td><span class="badge text-bg-danger">Stockout risk</span></td>
+                </tr>
+                <tr>
+                  <td>DT-1002</td>
+                  <td>Graphic Tee</td>
+                  <td>Tops</td>
+                  <td>392</td>
+                  <td class="text-success">+2%</td>
+                  <td>840</td>
+                  <td>600</td>
+                  <td>26</td>
+                  <td><span class="badge text-bg-success">Healthy</span></td>
+                </tr>
+                <tr>
+                  <td>DT-1003</td>
+                  <td>Cargo Pants</td>
+                  <td>Bottoms</td>
+                  <td>248</td>
+                  <td class="text-success">+27%</td>
+                  <td>710</td>
+                  <td>500</td>
+                  <td>34</td>
+                  <td><span class="badge text-bg-danger">Stockout risk</span></td>
+                </tr>
+                <tr>
+                  <td>DT-1004</td>
+                  <td>Ribbed Knit Top</td>
+                  <td>Tops</td>
+                  <td>168</td>
+                  <td class="text-danger">-19%</td>
+                  <td>1,490</td>
+                  <td>0</td>
+                  <td>62</td>
+                  <td><span class="badge text-bg-info">Excess stock</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </main>
 
       <!-- Show the project details. -->
