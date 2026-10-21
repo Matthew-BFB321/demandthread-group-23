@@ -119,12 +119,44 @@ footer {
   background-color: #FDEBDF;
 }
 
+/* KPIs --------------------------------------------- */
+/* Arranging KPI cards in a column */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+
+/* Styling KPI cards */
+.kpi {
+  background-color: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 16px;
+}
+/* KPI labels */
+.kpi-label {
+  color: #6B7280;
+  font-size: 0.8rem;
+}
+/*KPI values styling */
+.kpi-value {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
 
 /* On screens 900px or wider, a 230px sidebar is added -------------------- */
 @media (min-width: 900px) {
   .layout {
     grid-template-columns: 230px 1fr;
   }
+/* Arranging the KPI cards from rows down to 4 columns across */
+  .kpi-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
 }
 
 
