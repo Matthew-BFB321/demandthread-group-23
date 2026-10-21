@@ -34,6 +34,54 @@
       <main>
         <h1 class="page-title">Orders</h1>
         <p class="page-subtitle">Reorder recommendations waiting for approval, and orders already sent.</p>
+                <!-- This creates a section which will display reorder recommendation data -->
+        <section class="card-box">
+          <h2>Reorder recommendations</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Supplier</th>
+                  <th>Demand / day</th>
+                  <th>Stock + on order</th>
+                  <th>Reorder point</th>
+                  <th>Recommended qty</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Denim Jacket</td>
+                  <td>Maseru Denim Mills</td>
+                  <td>54</td>
+                  <td>270</td>
+                  <td>1,061</td>
+                  <td><strong>1,180</strong></td>
+                  <td><span class="badge text-bg-warning">Pending</span></td>
+                </tr>
+                <tr>
+                  <td>Basic Crop Top</td>
+                  <td>Durban Garment Works</td>
+                  <td>51</td>
+                  <td>460</td>
+                  <td>567</td>
+                  <td><strong>470</strong></td>
+                  <td><span class="badge text-bg-warning">Pending</span></td>
+                </tr>
+                <tr>
+                  <td>Cargo Pants</td>
+                  <td>Dhaka Apparel Ltd</td>
+                  <td>35</td>
+                  <td>1,210</td>
+                  <td>1,328</td>
+                  <td><strong>370</strong></td>
+                  <td><span class="badge text-bg-warning">Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </main>
 
       <!-- This makes the footer for the page -->
