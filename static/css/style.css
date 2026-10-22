@@ -158,6 +158,33 @@ footer {
   margin-bottom: 12px;
 }
 
+/* Login screen styling ---------------------------------- */
+/* Centering the login box and making it responsive */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+.login-box {
+  width: 100%;
+  max-width: 400px;
+}
+
+
+/* Styling the buttons using orange and a darker orange */
+
+.btn-primary {
+  background-color: #F26B1D;
+  border-color: #F26B1D;
+}
+
+.btn-primary:hover {
+  background-color: #D4550C;
+  border-color: #D4550C;
+}
+
 /* On screens 900px or wider, a 230px sidebar is added -------------------- */
 @media (min-width: 900px) {
   .layout {
