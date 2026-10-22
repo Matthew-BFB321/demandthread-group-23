@@ -60,6 +60,104 @@
       <main>
         <h1 class="page-title">Dashboard</h1>
         <p class="page-subtitle">Real-time visibility. Smarter decisions.</p>
+
+<!-- A demand alert showing increasing sales and low stock -->
+        <section class="card-box alert-card">
+          <h2>Demand alert</h2>
+          <p><strong>Denim Jacket (DT-1001)</strong> sales are up 15% on last week.</p>
+          <p>Current stock lasts about <strong>5 days</strong>, but the supplier lead time is <strong>18 days</strong>.</p>
+          <a class="btn btn-secondary" href="alerts.html">View all alerts</a>
+        </section>
+
+<!-- Adding live sales and inventory section -->
+        <section class="card-box">
+          <h2>Live sales and inventory</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Sold (7 days)</th>
+                  <th>Change</th>
+                  <th>Stock</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <!-- Adding the products in -->
+              <tbody>
+                <tr>
+                  <td>Denim Jacket</td>
+                  <td>380</td>
+                  <td class="text-success">+15%</td>
+                  <td>270</td>
+                  <td><span class="badge text-bg-danger">Stockout risk</span></td>
+                </tr>
+                <tr>
+                  <td>Cargo Pants</td>
+                  <td>248</td>
+                  <td class="text-success">+27%</td>
+                  <td>710</td>
+                  <td><span class="badge text-bg-danger">Stockout risk</span></td>
+                </tr>
+                <tr>
+                  <td>Basic Crop Top</td>
+                  <td>357</td>
+                  <td class="text-success">+5%</td>
+                  <td>460</td>
+                  <td><span class="badge text-bg-danger">Stockout risk</span></td>
+                </tr>
+                <tr>
+                  <td>Graphic Tee</td>
+                  <td>392</td>
+                  <td class="text-success">+2%</td>
+                  <td>840</td>
+                  <td><span class="badge text-bg-success">Healthy</span></td>
+                </tr>
+                <tr>
+                  <td>Puffer Vest</td>
+                  <td>126</td>
+                  <td class="text-danger">-19%</td>
+                  <td>1,440</td>
+                  <td><span class="badge text-bg-info">Excess stock</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <a href="sales_inventory.html">See all products</a>
+        </section>
+
+<!-- Showing a recommendation for reorders also including a link to Orders for approving -->
+        <section class="card-box">
+          <h2>Reorder recommendation</h2>
+          <p><strong>Denim Jacket</strong> from Maseru Denim Mills</p>
+          <ul>
+            <li>Average demand: 54 units/day</li>
+            <li>Reorder point: 1,061 units</li>
+            <li>Stock + on order: 270 units</li>
+          </ul>
+          <p>Recommended order: <strong>1,180 units</strong></p>
+          <a class="btn btn-primary" href="orders.html">Review and approve</a>
+        </section>
+
+<!-- Bar graph for Denim Jackets sold per day -->
+        <section class="card-box">
+          <h2>Denim Jacket: units sold per day (last 7 days)</h2>
+          <p class="bar-label">Mon 21 Sep: 42 units</p>
+          <div class="bar" style="width: 56%;"></div>
+          <p class="bar-label">Tue 22 Sep: 44 units</p>
+          <div class="bar" style="width: 59%;"></div>
+          <p class="bar-label">Wed 23 Sep: 48 units</p>
+          <div class="bar" style="width: 64%;"></div>
+          <p class="bar-label">Thu 24 Sep: 52 units</p>
+          <div class="bar" style="width: 69%;"></div>
+          <p class="bar-label">Fri 25 Sep: 61 units</p>
+          <div class="bar" style="width: 81%;"></div>
+          <p class="bar-label">Sat 26 Sep: 75 units</p>
+          <div class="bar" style="width: 100%;"></div>
+          <p class="bar-label">Sun 27 Sep: 58 units</p>
+          <div class="bar" style="width: 77%;"></div>
+        </section>
+
       </main>
 
       <!-- Displaying the footer -->

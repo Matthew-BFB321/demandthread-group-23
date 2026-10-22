@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders - DemandThread</title>
+  <!-- This loads the Bootstrap CSS and our custom styles for our unique design -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+  <div class="layout">
+
+    <!-- The following creates the sidebar navigation with the links to the different sections of the app -->
+    <nav class="sidebar">
+      <p class="brand">Demand<span>Thread</span></p>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="sales_inventory.html">Sales and Inventory</a></li>
+        <li><a href="forecasts.html">Forecasts</a></li>
+        <li><a href="alerts.html">Alerts</a></li>
+        <li><a href="orders.html" class="active">Orders</a></li>
+        <li><a href="supplier_portal.html">Supplier Portal</a></li>
+      </ul>
+    </nav>
+
+    <div class="content">
+      <!-- This makes the top header bar and introduction for the Orders page -->
+      <header class="topbar">
+        <span>Last updated: 28 Sep 2026, 07:30</span>
+        <span>Buyer View</span>
+      </header>
+
+      <main>
+        <h1 class="page-title">Orders</h1>
+        <p class="page-subtitle">Reorder recommendations waiting for approval, and orders already sent.</p>
+                <!-- This creates a section which will display reorder recommendation data -->
+        <section class="card-box">
+          <h2>Reorder recommendations</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Supplier</th>
+                  <th>Demand / day</th>
+                  <th>Stock + on order</th>
+                  <th>Reorder point</th>
+                  <th>Recommended qty</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Denim Jacket</td>
+                  <td>Maseru Denim Mills</td>
+                  <td>54</td>
+                  <td>270</td>
+                  <td>1,061</td>
+                  <td><strong>1,180</strong></td>
+                  <td><span class="badge text-bg-warning">Pending</span></td>
+                </tr>
+                <tr>
+                  <td>Basic Crop Top</td>
+                  <td>Durban Garment Works</td>
+                  <td>51</td>
+                  <td>460</td>
+                  <td>567</td>
+                  <td><strong>470</strong></td>
+                  <td><span class="badge text-bg-warning">Pending</span></td>
+                </tr>
+                <tr>
+                  <td>Cargo Pants</td>
+                  <td>Dhaka Apparel Ltd</td>
+                  <td>35</td>
+                  <td>1,210</td>
+                  <td>1,328</td>
+                  <td><strong>370</strong></td>
+                  <td><span class="badge text-bg-warning">Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+                <!-- This creates a section for reviewing/approving order recommendations -->
+        <section class="card-box">
+          <h2>Review a recommendation</h2>
+          <form>
+            <div class="mb-3">
+              <label for="product" class="form-label">Product</label>
+              <select id="product" name="product" class="form-select" required>
+                <option value="">Choose a product...</option>
+                <option value="DT-1001">Denim Jacket (recommended 1,180)</option>
+                <option value="DT-1008">Basic Crop Top (recommended 470)</option>
+                <option value="DT-1003">Cargo Pants (recommended 370)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="qty" class="form-label">Order quantity</label>
+              <input type="number" id="qty" name="qty" class="form-control" min="10" step="10" required>
+              <p class="text-muted">Minimum 10, in multiples of 10.</p>
+            </div>
+            <div class="mb-3">
+              <label for="reason" class="form-label">Reason for changing the quantity (optional)</label>
+              <textarea id="reason" name="reason" class="form-control" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Approve and send to supplier</button>
+            <button type="submit" class="btn btn-secondary">Reject</button>
+          </form>
+        </section>
+      </main>
+
+      <!-- This makes the footer for the page -->
+      <footer>DemandThread - BFB 321 Group 23 - Sample data</footer>
+    </div>
+
+  </div>
+</body>
+</html>
