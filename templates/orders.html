@@ -82,6 +82,32 @@
             </table>
           </div>
         </section>
+                <!-- This creates a section for reviewing/approving order recommendations -->
+        <section class="card-box">
+          <h2>Review a recommendation</h2>
+          <form>
+            <div class="mb-3">
+              <label for="product" class="form-label">Product</label>
+              <select id="product" name="product" class="form-select" required>
+                <option value="">Choose a product...</option>
+                <option value="DT-1001">Denim Jacket (recommended 1,180)</option>
+                <option value="DT-1008">Basic Crop Top (recommended 470)</option>
+                <option value="DT-1003">Cargo Pants (recommended 370)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="qty" class="form-label">Order quantity</label>
+              <input type="number" id="qty" name="qty" class="form-control" min="10" step="10" required>
+              <p class="text-muted">Minimum 10, in multiples of 10.</p>
+            </div>
+            <div class="mb-3">
+              <label for="reason" class="form-label">Reason for changing the quantity (optional)</label>
+              <textarea id="reason" name="reason" class="form-control" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Approve and send to supplier</button>
+            <button type="submit" class="btn btn-secondary">Reject</button>
+          </form>
+        </section>
       </main>
 
       <!-- This makes the footer for the page -->

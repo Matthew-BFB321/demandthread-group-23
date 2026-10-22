@@ -29,7 +29,7 @@
       <!-- Content area for the main page content -->
       <header class="topbar">
         <span>Last updated: 28 Sep 2026, 07:30</span>
-        <span>Buyer View</span>
+        <span>Buyer View - <a href="login.html">Sign out</a></span>
       </header>
 
 <!-- KPIs for sales, revenue, alerts and reorders -->
@@ -124,6 +124,38 @@
             </table>
           </div>
           <a href="sales_inventory.html">See all products</a>
+        </section>
+
+<!-- Showing a recommendation for reorders also including a link to Orders for approving -->
+        <section class="card-box">
+          <h2>Reorder recommendation</h2>
+          <p><strong>Denim Jacket</strong> from Maseru Denim Mills</p>
+          <ul>
+            <li>Average demand: 54 units/day</li>
+            <li>Reorder point: 1,061 units</li>
+            <li>Stock + on order: 270 units</li>
+          </ul>
+          <p>Recommended order: <strong>1,180 units</strong></p>
+          <a class="btn btn-primary" href="orders.html">Review and approve</a>
+        </section>
+
+<!-- Bar graph for Denim Jackets sold per day -->
+        <section class="card-box">
+          <h2>Denim Jacket: units sold per day (last 7 days)</h2>
+          <p class="bar-label">Mon 21 Sep: 42 units</p>
+          <div class="bar" style="width: 56%;"></div>
+          <p class="bar-label">Tue 22 Sep: 44 units</p>
+          <div class="bar" style="width: 59%;"></div>
+          <p class="bar-label">Wed 23 Sep: 48 units</p>
+          <div class="bar" style="width: 64%;"></div>
+          <p class="bar-label">Thu 24 Sep: 52 units</p>
+          <div class="bar" style="width: 69%;"></div>
+          <p class="bar-label">Fri 25 Sep: 61 units</p>
+          <div class="bar" style="width: 81%;"></div>
+          <p class="bar-label">Sat 26 Sep: 75 units</p>
+          <div class="bar" style="width: 100%;"></div>
+          <p class="bar-label">Sun 27 Sep: 58 units</p>
+          <div class="bar" style="width: 77%;"></div>
         </section>
 
       </main>
