@@ -147,6 +147,17 @@ footer {
   font-weight: bold;
 }
 
+/* Styling the bar chart ----------------------------------------------- */
+.bar-label {
+  margin-bottom: 4px;
+}
+.bar {
+  background-color: #F26B1D;
+  height: 16px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
 /* On screens 900px or wider, a 230px sidebar is added -------------------- */
 @media (min-width: 900px) {
   .layout {
