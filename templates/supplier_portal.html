@@ -56,6 +56,38 @@
             </table>
           </div>
         </section>
+                <!-- This creates an order update form for suppliers to keep track of their orders -->
+        <section class="card-box">
+          <h2>Update an order</h2>
+          <form>
+            <div class="mb-3">
+              <label for="po" class="form-label">Purchase order</label>
+              <select id="po" name="po" class="form-select" required>
+                <option value="">Choose an order...</option>
+                <option>PO-0421</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="status" class="form-label">New status</label>
+              <select id="status" name="status" class="form-select" required>
+                <option value="">Choose a status...</option>
+                <option>Confirmed</option>
+                <option>In production</option>
+                <option>Shipped</option>
+                <option>Delivered</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="delivery" class="form-label">Expected delivery date</label>
+              <input type="date" id="delivery" name="delivery" class="form-control" min="2026-09-28" required>
+            </div>
+            <div class="mb-3">
+              <label for="notes" class="form-label">Notes for the buyer (optional)</label>
+              <textarea id="notes" name="notes" class="form-control" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save update</button>
+          </form>
+        </section>
       </main>
 
       <!-- This makes the footer, the same as the other pages -->
