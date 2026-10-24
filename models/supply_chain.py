@@ -69,3 +69,111 @@ def reorder_point(daily_demand, lead_time_days, safety_stock_units):
 def needs_reorder(in_stock, on_order, reorder_point_units):
     """Need to reorder if total stock (including what is on order) has fallen to the ROP."""
     return in_stock + on_order <= reorder_point_units
+
+def calculate_eoq(demand, order_cost, hold_cost):
+    """Economic Order Quantity: the order size with the lowest total cost.
+
+        EOQ = square root of (2 x D x S / H)
+
+    D = annual demand, S = cost per order, H = holding cost per unit per year
+    """
+    return math.sqrt((2 * demand * order_cost) / hold_cost)
+
+
+def total_annual_cost(demand, order_cost, hold_cost, order_qty):
+    """Ordering cost + holding cost for the year, given the order quantity.
+
+        total = (D / Q) x S + (Q / 2) x H
+
+    Q = order quantity
+    """
+    ordering = (demand / order_qty) * order_cost
+    holding = (order_qty / 2) * hold_cost
+    return ordering + holding
+
+
+def recommended_order_quantity(daily_demand, lead_time_days, safety_stock_units,
+                               in_stock, on_order, eoq):
+    """Number of units to order, rounded up to a multiple of 10.
+
+        target stock = daily demand x (lead time + review period) + safety stock
+        shortfall    = target stock - (in stock + on order)
+        order        = the greater value between the shortfall and the EOQ
+
+    The target covers demand until the NEXT weekly order would arrive.
+    Returns 0 if there is already enough stock.
+    """
+    target = daily_demand * (lead_time_days + REVIEW_PERIOD_DAYS) + safety_stock_units
+    shortfall = target - (in_stock + on_order)
+    if shortfall <= 0:
+        return 0
+    quantity = max(shortfall, eoq)
+    return math.ceil(quantity / 10) * 10
+
+
+# Section 3: Stock alerts 
+EXCESS_WEEKS = 6         # more than this many weeks of cover = excess stock
+HIGH_EXCESS_WEEKS = 9    # more than this = high-severity excess
+
+
+def average_daily_demand(units_last_7_days):
+    """Average units sold per day over the last week.
+
+        daily demand = units sold in 7 days / 7
+
+    Example: 357 units / 7 = 51 units per day
+    """
+    return units_last_7_days / 7
+
+
+def days_of_cover(in_stock, on_order, daily_demand):
+    """How many days the stock will last at the current sales rate.
+
+        days of cover = (in stock + on order) / daily demand
+
+    Stock on order is counted because it will arrive.
+    Example: (840 + 600) / 56 = 25.7 days
+    If nothing is selling we can't divide by zero, so return 999
+    (meaning: the stock lasts a very long time).
+    """
+    if daily_demand <= 0:
+        return 999
+    return (in_stock + on_order) / daily_demand
+
+
+def weeks_of_cover(cover_days):
+    """Convert days of cover to weeks. Example: 80 days / 7 = 11.4 weeks"""
+    return cover_days / 7
+
+
+def alert_status(cover_days, lead_time_days):
+    """Classify a product as "Stockout risk", "Excess stock" or "Healthy"."""
+    if cover_days < lead_time_days:
+        return "Stockout risk"
+    elif weeks_of_cover(cover_days) > EXCESS_WEEKS:
+        return "Excess stock"
+    else:
+        return "Healthy"
+
+
+def alert_severity(status, cover_days, lead_time_days):
+    """How urgent an alert is: "High", "Medium", or "" for healthy products.
+
+    Stockout risk is High if the stock lasts less than HALF the lead time.
+    Excess stock is High if there are more than 9 weeks of cover.
+    """
+    if status == "Stockout risk":
+        if cover_days < lead_time_days / 2:
+            return "High"
+        else:
+            return "Medium"
+    elif status == "Excess stock":
+        if weeks_of_cover(cover_days) > HIGH_EXCESS_WEEKS:
+            return "High"
+        else:
+            return "Medium"
+    else:
+        return ""
+
+
+
