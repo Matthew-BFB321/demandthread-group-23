@@ -79,3 +79,33 @@ def test_alert_severity():
     assert sc.alert_severity("Excess stock", 80, 35) == "High"
     # 62 days = 8.9 weeks, not more than 9 -> Medium
     assert sc.alert_severity("Excess stock", 62, 14) == "Medium"
+
+
+# Section 4: Forecasting tests
+
+def test_percent_change():
+    # Sales increased by approximately 15.15%.
+    assert round(sc.percent_change(380, 330), 2) == 15.15
+    assert sc.percent_change(50, 0) == 0
+
+
+def test_trend_forecast():
+    assert sc.trend_forecast(380, 330) == 430
+    # Forecast sales cannot be negative.
+    assert sc.trend_forecast(20, 100) == 0
+
+
+def test_trend_label():
+    assert sc.trend_label(430, 380) == "Rising"
+    assert sc.trend_label(399, 392) == "Stable"
+    assert sc.trend_label(128, 168) == "Falling"
+
+
+def test_forecast_error_percent():
+    # The forecast was approximately 2.04% below actual sales.
+    assert round(sc.forecast_error_percent(240, 245), 2) == -2.04
+
+
+def test_mape():
+    # Both absolute errors are 10%, giving an average of 10%.
+    assert sc.mape([110, 180], [100, 200]) == 10
