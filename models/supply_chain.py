@@ -109,3 +109,68 @@ def recommended_order_quantity(daily_demand, lead_time_days, safety_stock_units,
         return 0
     quantity = max(shortfall, eoq)
     return math.ceil(quantity / 10) * 10
+
+
+# Section 3: Stock alerts 
+EXCESS_WEEKS = 6         # more than this many weeks of cover = excess stock
+HIGH_EXCESS_WEEKS = 9    # more than this = high-severity excess
+
+
+def average_daily_demand(units_last_7_days):
+    """Average units sold per day over the last week.
+
+        daily demand = units sold in 7 days / 7
+
+    Example: 357 units / 7 = 51 units per day
+    """
+    return units_last_7_days / 7
+
+
+def days_of_cover(in_stock, on_order, daily_demand):
+    """How many days the stock will last at the current sales rate.
+
+        days of cover = (in stock + on order) / daily demand
+
+    Stock on order is counted because it will arrive.
+    Example: (840 + 600) / 56 = 25.7 days
+    If nothing is selling we can't divide by zero, so return 999
+    (meaning: the stock lasts a very long time).
+    """
+    if daily_demand <= 0:
+        return 999
+    return (in_stock + on_order) / daily_demand
+
+
+def weeks_of_cover(cover_days):
+    """Convert days of cover to weeks. Example: 80 days / 7 = 11.4 weeks"""
+    return cover_days / 7
+
+
+def alert_status(cover_days, lead_time_days):
+    """Classify a product as "Stockout risk", "Excess stock" or "Healthy"."""
+    if cover_days < lead_time_days:
+        return "Stockout risk"
+    elif weeks_of_cover(cover_days) > EXCESS_WEEKS:
+        return "Excess stock"
+    else:
+        return "Healthy"
+
+
+def alert_severity(status, cover_days, lead_time_days):
+    """How urgent an alert is: "High", "Medium", or "" for healthy products.
+
+    Stockout risk is High if the stock lasts less than HALF the lead time.
+    Excess stock is High if there are more than 9 weeks of cover.
+    """
+    if status == "Stockout risk":
+        if cover_days < lead_time_days / 2:
+            return "High"
+        else:
+            return "Medium"
+    elif status == "Excess stock":
+        if weeks_of_cover(cover_days) > HIGH_EXCESS_WEEKS:
+            return "High"
+        else:
+            return "Medium"
+    else:
+        return ""
