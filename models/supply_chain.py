@@ -175,5 +175,54 @@ def alert_severity(status, cover_days, lead_time_days):
     else:
         return ""
 
+    
+# Section 4: Forecasting
+
+# Continue the change from the last two weeks to estimate next week's sales.
+# This assumes the recent trend continues and can be sensitive to sudden changes.
+
+TREND_THRESHOLD = 10  # Percentage change needed for Rising or Falling
+
+
+def percent_change(current, previous):
+    """Calculate the percentage change in weekly sales.
+
+    Inputs: current and previous weekly sales, in units.
+    Formula: (current - previous) / previous * 100.
+    Uses 0 as a fallback when previous sales are 0.
+    """
+    if previous == 0:
+        return 0
+    return (current - previous) / previous * 100
+
+
+def trend_forecast(this_week, last_week):
+    """Estimate next week's sales in units.
+
+    Inputs: sales units for this week and last week.
+    Formula: this_week + (this_week - last_week).
+    Assumes the same change continues. Negative forecasts are set to 0.
+    """
+    forecast = this_week + (this_week - last_week)
+    if forecast < 0:
+        return 0
+    return forecast
+
+
+def trend_label(forecast, this_week):
+    """Describe whether forecast sales are rising, falling or stable.
+
+    Inputs: forecast units and this week's sales units.
+    Uses (forecast - this_week) / this_week * 100.
+    At least +10% means Rising; at most -10% means Falling.
+    Otherwise Stable. Zero sales use percent_change's fallback of 0.
+    """
+    change = percent_change(forecast, this_week)
+    if change >= TREND_THRESHOLD:
+        return "Rising"
+    elif change <= -TREND_THRESHOLD:
+        return "Falling"
+    else:
+        return "Stable"
 
 
