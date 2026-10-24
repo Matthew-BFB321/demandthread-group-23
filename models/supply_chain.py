@@ -174,3 +174,6 @@ def alert_severity(status, cover_days, lead_time_days):
             return "Medium"
     else:
         return ""
+
+
+

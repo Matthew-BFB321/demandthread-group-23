@@ -46,3 +46,36 @@ def test_recommended_order_quantity():
     assert sc.recommended_order_quantity(50, 10, 30, 105, 0, 0) == 780
     # 1000 in stock is above the target of 880 -> order nothing
     assert sc.recommended_order_quantity(50, 10, 30, 1000, 0, 0) == 0    
+
+
+    # Section 3 tests: Stock alerts
+def test_average_daily_demand():
+    # 357 / 7 = 51
+    assert sc.average_daily_demand(357) == 51
+
+
+def test_days_of_cover():
+    # (840 + 600) / 56 = 25.71
+    assert round(sc.days_of_cover(840, 600, 56), 2) == 25.71
+    # nothing selling -> 999
+    assert sc.days_of_cover(100, 0, 0) == 999
+
+
+def test_alert_status():
+    # 5 days < 18-day lead time -> Stockout risk
+    assert sc.alert_status(5, 18) == "Stockout risk"
+    # 80 days / 7 = 11.4 weeks, more than 6 -> Excess stock
+    assert sc.alert_status(80, 35) == "Excess stock"
+    # 26 days >= 10-day lead time, and 26 / 7 = 3.7 weeks -> Healthy
+    assert sc.alert_status(26, 10) == "Healthy"
+
+
+def test_alert_severity():
+    # 5 days < half of 18 (= 9) -> High
+    assert sc.alert_severity("Stockout risk", 5, 18) == "High"
+    # 9 days is not less than half of 10 (= 5) -> Medium
+    assert sc.alert_severity("Stockout risk", 9, 10) == "Medium"
+    # 80 days = 11.4 weeks, more than 9 -> High
+    assert sc.alert_severity("Excess stock", 80, 35) == "High"
+    # 62 days = 8.9 weeks, not more than 9 -> Medium
+    assert sc.alert_severity("Excess stock", 62, 14) == "Medium"
