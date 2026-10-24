@@ -42,3 +42,30 @@ PRODUCTS = [
 # Denim Jacket units sold per week
 # weeks starting 17 Aug, 24 Aug, 31 Aug, 7 Sep, 14 Sep, 21 Sep
 DENIM_WEEKLY_SALES = [210, 225, 245, 282, 330, 380]
+
+# Section 2: Logic for reordering (when and how much to order)
+# Just a note: Order quantity is calculated based on sales rates each week, EOQ used only for min order size.
+ORDERING_COST = 50
+HOLDING_COST_RATE = 0.25        # 25% of value per year
+REVIEW_PERIOD_DAYS = 7
+Z_95 = 1.65                     # z-score for 95% service
+
+def safety_stock(demand_std_dev, lead_time_days):
+    """Extra stock held in case demand is higher than average.
+
+        SS = z x standard deviation of daily demand x square root of lead time
+
+    z = 1.65 gives a 95% assurance that we won't run out while waiting for delivery.
+    """
+    return Z_95 * demand_std_dev * math.sqrt(lead_time_days)
+
+def reorder_point(daily_demand, lead_time_days, safety_stock_units):
+    """The stock level when a new order must be made.
+
+        ROP = daily demand x lead time + safety stock
+    """
+    return daily_demand * lead_time_days + safety_stock_units
+
+def needs_reorder(in_stock, on_order, reorder_point_units):
+    """Need to reorder if total stock (including what is on order) has fallen to the ROP."""
+    return in_stock + on_order <= reorder_point_units
