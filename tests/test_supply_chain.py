@@ -25,3 +25,24 @@ def test_needs_reorder():
     assert sc.needs_reorder(270, 0, 1061) == True
     # 840 + 600 = 1440 -> above 600 -> no reorder
     assert sc.needs_reorder(840, 600, 600) == False
+
+def test_eoq_tutorial_example():
+    # From the EOQ tut: square root of (2 x 12000 x 50 / 2) = 774.6
+    assert round(sc.calculate_eoq(12000, 50, 2), 1) == 774.6
+
+
+def test_total_annual_cost_tutorial_example():
+    # From the tut: (12000 / 774.6) x 50 + (774.6 / 2) x 2 = 1549.19
+    eoq = sc.calculate_eoq(12000, 50, 2)
+    assert round(sc.total_annual_cost(12000, 50, 2, eoq), 2) == 1549.19
+
+
+def test_recommended_order_quantity():
+    # target = 50 x (10 + 7) + 30 = 880 ; shortfall = 880 - 100 = 780 -> 780
+    assert sc.recommended_order_quantity(50, 10, 30, 100, 0, 0) == 780
+    # same, but EOQ is 900, which is bigger than 780 -> 900
+    assert sc.recommended_order_quantity(50, 10, 30, 100, 0, 900) == 900
+    # shortfall = 880 - 105 = 775 -> rounded up to 780
+    assert sc.recommended_order_quantity(50, 10, 30, 105, 0, 0) == 780
+    # 1000 in stock is above the target of 880 -> order nothing
+    assert sc.recommended_order_quantity(50, 10, 30, 1000, 0, 0) == 0    
