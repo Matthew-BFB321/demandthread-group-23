@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  
+    <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alerts - DemandThread</title>
 
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../static/css/style.css">
 </head>
+
 <body>
   <div class="layout">
 
@@ -32,40 +34,19 @@
         <span>Buyer View</span>
       </header>
 
-      <main>
+     
+<main>
         <h1 class="page-title">Alerts</h1>
         <p class="page-subtitle">Products at risk of running out or carrying too much stock.</p>
-     
-        <!-- Excess stock alert cards -->
-        <section>
-          <h2>Excess stock (2)</h2>
-          <article class="card-box alert-card">
-            <h2>Puffer Vest (DT-1007) <span class="badge text-bg-danger">High</span></h2>
-            <p>Sales down 19% on last week. 11.4 weeks of stock on hand. Consider a markdown or pausing orders.</p>
-         </article>
 
-          <article class="card-box alert-card">
-            <h2>Ribbed Knit Top (DT-1004) <span class="badge text-bg-warning">Medium</span></h2>
-            <p>Sales down 19% on last week. 8.9 weeks of stock on hand. Consider a markdown or pausing orders.</p>
-          </article>
-        </section>
-          <!-- “Explanation of alert criteria -->
-        <p class="text-muted">Stockout alert: days of cover is less than the supplier lead time. Excess alert: more than 6 weeks of cover.</p>
-
-
-
-      
-    </main>
-
-       <!-- Stockout risk alert card -->
+        <!-- Stockout risk alert cards -->
         <section>
           <h2>Stockout risk (3)</h2>
           <article class="card-box alert-card">
             <h2>Denim Jacket (DT-1001) <span class="badge text-bg-danger">High</span></h2>
             <p>Sales up 15% on last week. Stock lasts about 5 days; supplier lead time is 18 days.</p>
           </article>
-
-           <article class="card-box alert-card">
+          <article class="card-box alert-card">
             <h2>Basic Crop Top (DT-1008) <span class="badge text-bg-warning">Medium</span></h2>
             <p>Sales up 5% on last week. Stock lasts about 9 days; supplier lead time is 10 days.</p>
           </article>
@@ -73,17 +54,24 @@
             <h2>Cargo Pants (DT-1003) <span class="badge text-bg-warning">Medium</span></h2>
             <p>Sales up 27% on last week. Stock (including orders) lasts about 34 days; supplier lead time is 35 days.</p>
           </article>
-
-            <article class="card-box alert-card">
-            <h2>Basic Crop Top (DT-1008) <span class="badge text-bg-warning">Medium</span></h2>
-            <p>Sales up 5% on last week. Stock lasts about 9 days; supplier lead time is 10 days.</p>
-          </article>
-          <article class="card-box alert-card">
-            <h2>Cargo Pants (DT-1003) <span class="badge text-bg-warning">Medium</span></h2>
-            <p>Sales up 27% on last week. Stock (including orders) lasts about 34 days; supplier lead time is 35 days.</p>
-          </article>
-
         </section>
+
+        <!-- Excess stock alert cards -->
+        <section>
+          <h2>Excess stock (2)</h2>
+          <article class="card-box alert-card">
+            <h2>Puffer Vest (DT-1007) <span class="badge text-bg-danger">High</span></h2>
+            <p>Sales down 19% on last week. 11.4 weeks of stock on hand. Consider a markdown or pausing orders.</p>
+          </article>
+          <article class="card-box alert-card">
+            <h2>Ribbed Knit Top (DT-1004) <span class="badge text-bg-warning">Medium</span></h2>
+            <p>Sales down 19% on last week. 8.9 weeks of stock on hand. Consider a markdown or pausing orders.</p>
+          </article>
+        </section>
+
+        <!-- Explanation of alert criteria -->
+        <p class="text-muted">Stockout alert: days of cover is less than the supplier lead time. Excess alert: more than 6 weeks of cover.</p>
+      </main>
 
 
       <!-- Footer and HTML structure closing -->
