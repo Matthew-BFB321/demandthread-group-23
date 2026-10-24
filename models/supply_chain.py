@@ -226,3 +226,32 @@ def trend_label(forecast, this_week):
         return "Stable"
 
 
+def forecast_error_percent(forecast, actual):
+    """Calculate the signed percentage error for one forecast.
+
+    Inputs: forecast and actual sales, in units.
+    Formula: (forecast - actual) / actual * 100.
+    Positive means too high; negative means too low.
+    Uses 0 as a fallback when actual sales are 0.
+    """
+    if actual == 0:
+        return 0
+    return (forecast - actual) / actual * 100
+
+
+def mape(forecasts, actuals):
+    """Calculate the mean absolute percentage error.
+
+    Inputs: matching lists of forecast and actual sales units.
+    Formula: average of abs((forecast - actual) / actual * 100).
+    Assumes both lists have the same length.
+    Empty lists return 0; zero actuals use the error function's fallback.
+    """
+    if len(forecasts) == 0:
+        return 0
+    total = 0
+    for i in range(len(forecasts)):
+        total = total + abs(forecast_error_percent(forecasts[i], actuals[i]))
+    return total / len(forecasts)
+
+
