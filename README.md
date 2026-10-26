@@ -17,11 +17,7 @@ flags products at risk of stockout or excess inventory, and recommends when and 
 much to reorder. The aim is to close the information gap between real-time customer
 demand and upstream production decisions.
 
-## Status
-
-🚧 In progress: semester project phase (frontend and supply chain model).
-
-## Tech stack
+## Languages and framework used
 
 - Frontend: HTML, CSS, Bootstrap
 
