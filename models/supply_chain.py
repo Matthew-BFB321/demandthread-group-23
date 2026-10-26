@@ -152,18 +152,12 @@ def alert_severity(status, cover_days, lead_time_days):
     
 # Section 4: Forecasting
 
-# Continue the change from the last two weeks to estimate next week's sales.
-# This assumes the recent trend continues and can be sensitive to sudden changes.
-
-TREND_THRESHOLD = 10  # Percentage change needed for Rising or Falling
+TREND_THRESHOLD = 10  # Percentage change threshold for trend labels
 
 
 def percent_change(current, previous):
-    """Calculate the percentage change in weekly sales.
-
-    Inputs: current and previous weekly sales, in units.
-    Formula: (current - previous) / previous * 100.
-    Uses 0 as a fallback when previous sales are 0.
+    """Percentage change between two weeks of unit sales.
+    If the previous week had 0 sales, then return 0.
     """
     if previous == 0:
         return 0
@@ -171,11 +165,7 @@ def percent_change(current, previous):
 
 
 def trend_forecast(this_week, last_week):
-    """Estimate next week's sales in units.
-
-    Inputs: sales units for this week and last week.
-    Formula: this_week + (this_week - last_week).
-    Assumes the same change continues. Negative forecasts are set to 0.
+    """Forecast next week's sales in units and forecasts cannot be negative.
     """
     forecast = this_week + (this_week - last_week)
     if forecast < 0:
@@ -184,12 +174,7 @@ def trend_forecast(this_week, last_week):
 
 
 def trend_label(forecast, this_week):
-    """Describe whether forecast sales are rising, falling or stable.
-
-    Inputs: forecast units and this week's sales units.
-    Uses (forecast - this_week) / this_week * 100.
-    At least +10% means Rising; at most -10% means Falling.
-    Otherwise Stable. Zero sales use percent_change's fallback of 0.
+    """Determine if the forecast is rising by 10% or more, falling by 10% or more, or stable compared to this week's sales.
     """
     change = percent_change(forecast, this_week)
     if change >= TREND_THRESHOLD:
@@ -201,12 +186,8 @@ def trend_label(forecast, this_week):
 
 
 def forecast_error_percent(forecast, actual):
-    """Calculate the signed percentage error for one forecast.
-
-    Inputs: forecast and actual sales, in units.
-    Formula: (forecast - actual) / actual * 100.
-    Positive means too high; negative means too low.
-    Uses 0 as a fallback when actual sales are 0.
+    """Calculate if the forecast was above or below actual sales, as a percentage.
+    If the actual is 0 then return 0.
     """
     if actual == 0:
         return 0
@@ -214,12 +195,8 @@ def forecast_error_percent(forecast, actual):
 
 
 def mape(forecasts, actuals):
-    """Calculate the mean absolute percentage error.
-
-    Inputs: matching lists of forecast and actual sales units.
-    Formula: average of abs((forecast - actual) / actual * 100).
-    Assumes both lists have the same length.
-    Empty lists return 0; zero actuals use the error function's fallback.
+    """Average absolute percentage error for matching lists of sales units.
+    This would assume equal list lengths and an empty list returns 0.
     """
     if len(forecasts) == 0:
         return 0

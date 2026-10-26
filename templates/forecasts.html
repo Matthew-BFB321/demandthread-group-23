@@ -4,14 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forecasts - DemandThread</title>
-  <!-- Loading bootstrap and the website styling. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
     <div class="layout">
 
-    <!-- Adding forecasts as the active page.  -->
+    
     <nav class="sidebar">
       <p class="brand">Demand<span>Thread</span></p>
       <ul>
@@ -24,7 +23,6 @@
       </ul>
     </nav>
        <div class="content">
-      <!-- Shows when the data was last updated and who is viewing it. -->
       <header class="topbar">
         <span>Last updated: 28 Sep 2026, 07:30</span>
         <span>Buyer View</span>
@@ -33,7 +31,6 @@
       <main>
         <h1 class="page-title">Forecasts</h1>
         <p class="page-subtitle">Expected demand per product, compared with what actually sold.</p>
-         <!-- Compare last week's sales with next week's forecast for each product. -->
         <section class="card-box">
           <h2>Next 7 days</h2>
           <div class="table-responsive">
@@ -59,7 +56,6 @@
             </table>
           </div>
         </section>
-        <!-- Show Light Blue Oversized Denim Jacket forecasts compared with actual weekly sales. -->
         <section class="card-box">
           <h2>Light Blue Oversized Denim Jacket: forecast vs actual (weekly units)</h2>
           <div class="table-responsive">
@@ -81,12 +77,8 @@
               </tbody>
             </table>
           </div>
-          <p class="text-muted">Error (%) = (forecast - actual) / actual × 100. Negative means we forecast too low.</p>
-          <p class="text-muted">Average forecast error (MAPE) over the last 4 weeks: 3.0%</p>
         </section>
       </main>
-
-      <!-- Group details and a note that this is sample data. -->
       <footer>DemandThread - BFB 321 Group 23 - Sample data</footer>
     </div>
 
