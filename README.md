@@ -24,5 +24,15 @@ demand and upstream production decisions.
 ## Tech stack
 
 - Frontend: HTML, CSS, Bootstrap
-- Backend: Flask (Python)
-- Database: MySQL (exam phase)
+
+## Supply chain model (Python)
+
+All the supply chain calculations are in one file, `models/supply_chain.py`.
+
+| Section | What it answers | Web page |
+|---|---|---|
+| 1. Sample data | The 8 products shown on our pages | All |
+| 2. Reorder logic | When do we order (reorder point + safety stock)? How much do we order? | Orders, Dashboard |
+| 3. Stock alerts | How many days will the stock last? Which products risk a stockout or carry excess stock? | Sales and Inventory, Alerts |
+| 4. Forecasting | How much will we sell next week? How accurate were past forecasts (MAPE)? | Forecasts |
+
