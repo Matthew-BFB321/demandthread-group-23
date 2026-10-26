@@ -49,6 +49,7 @@ def safety_stock(demand_std_dev, lead_time_days):
 
 def reorder_point(daily_demand, lead_time_days, safety_stock_units):
     """New order must be made at this point.
+       ROP = daily demand x lead time + SS
     """
     return daily_demand * lead_time_days + safety_stock_units
 
@@ -58,12 +59,14 @@ def needs_reorder(in_stock, on_order, reorder_point_units):
 
 def calculate_eoq(demand, order_cost, hold_cost):
     """Order size with the lowest total cost.
+       EOQ = square root(2 x D x S / H)
     """
     return math.sqrt((2 * demand * order_cost) / hold_cost)
 
 
 def total_annual_cost(demand, order_cost, hold_cost, order_qty):
     """Ordering cost + holding cost for the year
+       Total = (D / Q) x S + (Q / 2) x H
     """
     ordering = (demand / order_qty) * order_cost
     holding = (order_qty / 2) * hold_cost
