@@ -35,48 +35,35 @@ PRODUCTS = [
 DENIM_WEEKLY_SALES = [210, 225, 245, 282, 330, 380]
 
 # Section 2: Logic for reordering (when and how much to order)
-# Just a note: Order quantity is calculated based on sales rates each week, EOQ used only for min order size.
+# NB: Order quantity -> Based on sales rates each week; EOQ -> min order size.
 ORDERING_COST = 50
-HOLDING_COST_RATE = 0.25        # 25% of value per year
+HOLDING_COST_RATE = 0.25        
 REVIEW_PERIOD_DAYS = 7
-Z_95 = 1.65                     # z-score for 95% service
+Z_95 = 1.65                     # z-score -> 95% service
 
 def safety_stock(demand_std_dev, lead_time_days):
-    """Extra stock held in case demand is higher than average.
-
-        SS = z x standard deviation of daily demand x square root of lead time
-
-    z = 1.65 gives a 95% assurance that we won't run out while waiting for delivery.
+    """Extra stock for high demand.
+    z = 1.65 -> 95% service rate
     """
     return Z_95 * demand_std_dev * math.sqrt(lead_time_days)
 
 def reorder_point(daily_demand, lead_time_days, safety_stock_units):
-    """The stock level when a new order must be made.
-
-        ROP = daily demand x lead time + safety stock
+    """New order must be made at this point.
     """
     return daily_demand * lead_time_days + safety_stock_units
 
 def needs_reorder(in_stock, on_order, reorder_point_units):
-    """Need to reorder if total stock (including what is on order) has fallen to the ROP."""
+    """Total stock (including what is on order) less than ROP."""
     return in_stock + on_order <= reorder_point_units
 
 def calculate_eoq(demand, order_cost, hold_cost):
-    """Economic Order Quantity: the order size with the lowest total cost.
-
-        EOQ = square root of (2 x D x S / H)
-
-    D = annual demand, S = cost per order, H = holding cost per unit per year
+    """Order size with the lowest total cost.
     """
     return math.sqrt((2 * demand * order_cost) / hold_cost)
 
 
 def total_annual_cost(demand, order_cost, hold_cost, order_qty):
-    """Ordering cost + holding cost for the year, given the order quantity.
-
-        total = (D / Q) x S + (Q / 2) x H
-
-    Q = order quantity
+    """Ordering cost + holding cost for the year
     """
     ordering = (demand / order_qty) * order_cost
     holding = (order_qty / 2) * hold_cost
@@ -86,12 +73,7 @@ def total_annual_cost(demand, order_cost, hold_cost, order_qty):
 def recommended_order_quantity(daily_demand, lead_time_days, safety_stock_units,
                                in_stock, on_order, eoq):
     """Number of units to order, rounded up to a multiple of 10.
-
-        target stock = daily demand x (lead time + review period) + safety stock
-        shortfall    = target stock - (in stock + on order)
-        order        = the greater value between the shortfall and the EOQ
-
-    The target covers demand until the NEXT weekly order would arrive.
+   target covers demand until the NEXT weekly order would arrive.
     Returns 0 if there is already enough stock.
     """
     target = daily_demand * (lead_time_days + REVIEW_PERIOD_DAYS) + safety_stock_units
