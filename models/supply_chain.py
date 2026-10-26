@@ -4,13 +4,13 @@ import math
 
 # Section 1: Sample data ----------------------------------------------------
 #Variables:
-# units_last_7_days
-# units_previous_7_days
-# in_stock
-# on_order
-# lead_time_days
-# demand_std_dev
-# price
+# units_last_7_days - units sold in the last 7 days
+# units_previous_7_days - units sold in the week before
+# in_stock - current stock on hand
+# on_order - units ordered but not delivered yet
+# lead_time_days - days from placing an order to receiving it
+# demand_std_dev - standard deviation of demand
+# price - selling price in Rand
 
 PRODUCTS = [
     {"sku": "DT-1001", "name": "Denim Jacket", "units_last_7_days": 380,
