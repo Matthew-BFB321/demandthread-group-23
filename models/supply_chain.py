@@ -3,44 +3,35 @@
 import math
 
 # Section 1: Sample data ----------------------------------------------------
-#Variables:
-# units_last_7_days
-# units_previous_7_days
-# in_stock
-# on_order
-# lead_time_days
-# demand_std_dev
-# price
 
 PRODUCTS = [
-    {"sku": "DT-1001", "name": "Denim Jacket", "units_last_7_days": 380,
+    {"sku": "DT-1001", "name": "Light Blue Oversized Denim Jacket", "units_last_7_days": 380,
      "units_previous_7_days": 330, "in_stock": 270, "on_order": 0,
      "lead_time_days": 18, "demand_std_dev": 12, "price": 899},
-    {"sku": "DT-1002", "name": "Graphic Tee", "units_last_7_days": 392,
+    {"sku": "DT-1002", "name": "Black Cotton Logo T-Shirt", "units_last_7_days": 392,
      "units_previous_7_days": 385, "in_stock": 840, "on_order": 600,
      "lead_time_days": 10, "demand_std_dev": 10, "price": 249},
-    {"sku": "DT-1003", "name": "Cargo Pants", "units_last_7_days": 248,
+    {"sku": "DT-1003", "name": "Olive Green Relaxed-Fit Cargo Pants", "units_last_7_days": 248,
      "units_previous_7_days": 196, "in_stock": 710, "on_order": 500,
      "lead_time_days": 35, "demand_std_dev": 9, "price": 599},
-    {"sku": "DT-1004", "name": "Ribbed Knit Top", "units_last_7_days": 168,
+    {"sku": "DT-1004", "name": "Cream Long-Sleeve Ribbed Knit Top", "units_last_7_days": 168,
      "units_previous_7_days": 208, "in_stock": 1490, "on_order": 0,
      "lead_time_days": 14, "demand_std_dev": 6, "price": 329},
-    {"sku": "DT-1005", "name": "Oversized Hoodie", "units_last_7_days": 266,
+    {"sku": "DT-1005", "name": "Charcoal Pullover Hoodie", "units_last_7_days": 266,
      "units_previous_7_days": 280, "in_stock": 1140, "on_order": 300,
      "lead_time_days": 10, "demand_std_dev": 8, "price": 549},
-    {"sku": "DT-1006", "name": "Wide-Leg Jeans", "units_last_7_days": 245,
+    {"sku": "DT-1006", "name": "Dark Blue High-Waisted Wide-Leg Jeans", "units_last_7_days": 245,
      "units_previous_7_days": 231, "in_stock": 840, "on_order": 400,
      "lead_time_days": 18, "demand_std_dev": 8, "price": 699},
-    {"sku": "DT-1007", "name": "Puffer Vest", "units_last_7_days": 126,
+    {"sku": "DT-1007", "name": "Black Quilted Puffer Vest", "units_last_7_days": 126,
      "units_previous_7_days": 156, "in_stock": 1440, "on_order": 0,
      "lead_time_days": 35, "demand_std_dev": 5, "price": 649},
-    {"sku": "DT-1008", "name": "Basic Crop Top", "units_last_7_days": 357,
+    {"sku": "DT-1008", "name": "White Cotton Cropped T-Shirt", "units_last_7_days": 357,
      "units_previous_7_days": 340, "in_stock": 460, "on_order": 0,
      "lead_time_days": 10, "demand_std_dev": 11, "price": 179},
 ]
 
 # Denim Jacket units sold per week
-# weeks starting 17 Aug, 24 Aug, 31 Aug, 7 Sep, 14 Sep, 21 Sep
 DENIM_WEEKLY_SALES = [210, 225, 245, 282, 330, 380]
 
 # Section 2: Logic for reordering (when and how much to order)
@@ -176,5 +167,83 @@ def alert_severity(status, cover_days, lead_time_days):
     else:
         return ""
 
+    
+# Section 4: Forecasting
+
+# Continue the change from the last two weeks to estimate next week's sales.
+# This assumes the recent trend continues and can be sensitive to sudden changes.
+
+TREND_THRESHOLD = 10  # Percentage change needed for Rising or Falling
+
+
+def percent_change(current, previous):
+    """Calculate the percentage change in weekly sales.
+
+    Inputs: current and previous weekly sales, in units.
+    Formula: (current - previous) / previous * 100.
+    Uses 0 as a fallback when previous sales are 0.
+    """
+    if previous == 0:
+        return 0
+    return (current - previous) / previous * 100
+
+
+def trend_forecast(this_week, last_week):
+    """Estimate next week's sales in units.
+
+    Inputs: sales units for this week and last week.
+    Formula: this_week + (this_week - last_week).
+    Assumes the same change continues. Negative forecasts are set to 0.
+    """
+    forecast = this_week + (this_week - last_week)
+    if forecast < 0:
+        return 0
+    return forecast
+
+
+def trend_label(forecast, this_week):
+    """Describe whether forecast sales are rising, falling or stable.
+
+    Inputs: forecast units and this week's sales units.
+    Uses (forecast - this_week) / this_week * 100.
+    At least +10% means Rising; at most -10% means Falling.
+    Otherwise Stable. Zero sales use percent_change's fallback of 0.
+    """
+    change = percent_change(forecast, this_week)
+    if change >= TREND_THRESHOLD:
+        return "Rising"
+    elif change <= -TREND_THRESHOLD:
+        return "Falling"
+    else:
+        return "Stable"
+
+
+def forecast_error_percent(forecast, actual):
+    """Calculate the signed percentage error for one forecast.
+
+    Inputs: forecast and actual sales, in units.
+    Formula: (forecast - actual) / actual * 100.
+    Positive means too high; negative means too low.
+    Uses 0 as a fallback when actual sales are 0.
+    """
+    if actual == 0:
+        return 0
+    return (forecast - actual) / actual * 100
+
+
+def mape(forecasts, actuals):
+    """Calculate the mean absolute percentage error.
+
+    Inputs: matching lists of forecast and actual sales units.
+    Formula: average of abs((forecast - actual) / actual * 100).
+    Assumes both lists have the same length.
+    Empty lists return 0; zero actuals use the error function's fallback.
+    """
+    if len(forecasts) == 0:
+        return 0
+    total = 0
+    for i in range(len(forecasts)):
+        total = total + abs(forecast_error_percent(forecasts[i], actuals[i]))
+    return total / len(forecasts)
 
 

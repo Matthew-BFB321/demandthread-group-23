@@ -3,32 +3,28 @@
   box-sizing: border-box;
 }
 
-/* Background colour and font */
+
 body {
   background-color: #F6F6F7;
   font-family: Arial, sans-serif;
 }
 
-/* One column grid */
 .layout {
   display: grid;
   grid-template-columns: 1fr;
   min-height: 100vh;
 }
 
-/* Prevent overflowing */
 .content {
   min-width: 0;
 }
 
 /* Sidebar ----------------------------------------------------------- */
-/* Sidebar colour */
 .sidebar {
   background-color: #1C1C1E;
   padding: 16px;
 }
 
-/* Brand name styling */
 .brand {
   color: white;
   font-weight: bold;
@@ -38,12 +34,11 @@ body {
   color: #F26B1D;
 }
 
-/* Removing bullet points and default padding */
 .sidebar ul {
   list-style: none;
   padding: 0;
 }
-/* Styling sidebar links */
+
 .sidebar a {
   display: block;
   color: #C9C9CE;
@@ -51,13 +46,13 @@ body {
   padding: 8px 12px;
   border-radius: 8px;
 }
-/* Changes link colours when the mouse hovers over them */
+
 .sidebar a:hover {
   background-color: #2A2A2D;
   color: white;
 }
 
-/* Highlights the active sidebar link orange */
+
 .sidebar a.active {
   background-color: #F26B1D;
   color: white;
@@ -65,7 +60,6 @@ body {
 }
 
 /* Top bar styling --------------------------------------------- */
-
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -78,21 +72,21 @@ body {
 
 
 /* Text styling on the page ---------------------------------------- */
-/* Adds padding for the main content */
+
 main {
   padding: 24px;
 }
-/* Increasing the page title size and making it bold */
+
 .page-title {
   font-size: 1.8rem;
   font-weight: bold;
 }
-/* Styling the subtitle in grey and adding space below */
+
 .page-subtitle {
   color: #6B7280;
   margin-bottom: 24px;
 }
-/* Adding spacing and styling the footer text */
+
 footer {
   padding: 16px 24px;
   color: #6B7280;
@@ -100,7 +94,7 @@ footer {
 }
 
 /* Cards ---------------------------------------------------------------------- */
-/* Styling content boxes with white background and border */
+
 .card-box {
   background-color: white;
   border: 1px solid #E5E7EB;
@@ -108,19 +102,19 @@ footer {
   padding: 20px;
   margin-bottom: 24px;
 }
-/* Makes headings inside cards smaller and bold */
+
 .card-box h2 {
   font-size: 1.1rem;
   font-weight: bold;
 }
-/* Highlighting alert cards with an orange border and light orange background */
+
 .alert-card {
   border-left: 5px solid #F26B1D;
   background-color: #FDEBDF;
 }
 
 /* KPIs --------------------------------------------- */
-/* Arranging KPI cards in a column */
+
 .kpi-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -128,20 +122,18 @@ footer {
   margin-bottom: 24px;
 }
 
-
-/* Styling KPI cards */
 .kpi {
   background-color: white;
   border: 1px solid #E5E7EB;
   border-radius: 10px;
   padding: 16px;
 }
-/* KPI labels */
+
 .kpi-label {
   color: #6B7280;
   font-size: 0.8rem;
 }
-/*KPI values styling */
+
 .kpi-value {
   font-size: 1.6rem;
   font-weight: bold;
@@ -159,7 +151,7 @@ footer {
 }
 
 /* Login screen styling ---------------------------------- */
-/* Centering the login box and making it responsive */
+
 .login-page {
   display: flex;
   justify-content: center;
@@ -171,9 +163,6 @@ footer {
   width: 100%;
   max-width: 400px;
 }
-
-
-/* Styling the buttons using orange and a darker orange */
 
 .btn-primary {
   background-color: #F26B1D;
@@ -190,7 +179,7 @@ footer {
   .layout {
     grid-template-columns: 230px 1fr;
   }
-/* Arranging the KPI cards from rows down to 4 columns across */
+
   .kpi-grid {
     grid-template-columns: repeat(4, 1fr);
   }
