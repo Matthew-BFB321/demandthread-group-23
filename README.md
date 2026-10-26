@@ -32,3 +32,6 @@ All the supply chain calculations are in one file, `models/supply_chain.py`.
 | 3. Stock alerts | How many days will the stock last? Which products risk a stockout or carry excess stock? | Sales and Inventory, Alerts |
 | 4. Forecasting | How much will we sell next week? How accurate were past forecasts (MAPE)? | Forecasts |
 
+## Setup Instructions
+Open `templates/login.html` first to go to the login page and run the live server. This opens the web application. First a sign-in process is required (or it can be skipped for convinience in the demo). After sign-in it will show the dashboard and a navigation bar for other pages.
+
