@@ -112,8 +112,9 @@ def recommended_order_quantity(daily_demand, lead_time_days, safety_stock_units,
 
 
 # Section 3: Stock alerts 
-EXCESS_WEEKS = 6         # more than this many weeks of cover = excess stock
-HIGH_EXCESS_WEEKS = 9    # more than this = high-severity excess
+
+EXCESS_WEEKS = 6        
+HIGH_EXCESS_WEEKS = 9    
 
 
 def average_daily_demand(units_last_7_days):
