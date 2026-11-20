@@ -6,7 +6,7 @@ We worked out each answer by hand first, which we show in the comment above it, 
 This is run from the folder:   python -m pytest
 """
 
-import models.supply_chain as sc
+import supply_chain as sc
 
 # Testing Section 2
 
