@@ -1,9 +1,13 @@
 import logging
 import os
 
-from flask import Flask, jsonify, request
+from datetime import date
+
+from flask import (Flask, flash, jsonify, redirect, render_template, request,
+                   session, url_for)
 
 import db
+import models
 from api import api
 from config import CONFIGS
 
@@ -26,8 +30,24 @@ def handle_error(error):
 
 
 # ---------------------------------------------------------------------
-# Pages
+# Dashboard
 # ---------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------
+# Sales and inventory
+# ---------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------
+# Sign in, alerts and forecasts
+# ---------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------
+# Orders and supplier portal
+# ---------------------------------------------------------------------
+
 
 if __name__ == "__main__":
     app.run(debug=app.config["DEBUG"])
