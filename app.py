@@ -63,6 +63,12 @@ def logout():
     flash("You have been logged out", "success")
     return redirect(url_for("login"))
 
+@app.route("/alerts")
+def alerts():
+    return render_template("alerts.html",
+                           stockout=models.list_alerts("Stockout risk"),
+                           excess=models.list_alerts("Excess stock"))
+
 # ---------------------------------------------------------------------
 
 

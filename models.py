@@ -116,6 +116,12 @@ def check_login(email, password):
         return user
     return None
 
+def list_alerts(status):
+    """Products with this alert status, High severity first."""
+    products = [p for p in product_metrics() if p["status"] == status]
+    return sorted(products, key=lambda p: p["severity"] != "High")
+
+
 # =====================================================================
 
 
