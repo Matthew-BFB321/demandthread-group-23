@@ -69,6 +69,39 @@ def product_metrics():
 # =====================================================================
 
 
+def record_sale(product_id, quantity, channel):
+    """Save a sale and reduce stock together, rolling back if a write fails."""
+    if quantity <= 0:
+        return False, "Enter a quantity of at least 1."
+    if channel not in ("Store", "Online"):
+        return False, "Choose Store or Online as the sales channel."
+
+    connection = get_db()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT name, stock, price FROM products "
+                           "WHERE id = %s FOR UPDATE", (product_id,))
+            product = cursor.fetchone()
+            if product is None:
+                connection.rollback()
+                return False, "Could not find that product."
+            if quantity > product["stock"]:
+                connection.rollback()
+                return False, (f"Could not record sale: only {product['stock']} x "
+                               f"{product['name']} available.")
+
+            cursor.execute("INSERT INTO sales (product_id, quantity, unit_price, channel) "
+                           "VALUES (%s, %s, %s, %s)",
+                           (product_id, quantity, product["price"], channel))
+            cursor.execute("UPDATE products SET stock = stock - %s WHERE id = %s",
+                           (quantity, product_id))
+        connection.commit()
+        return True, f"Saved sale: {quantity} x {product['name']} ({channel})."
+    except Exception:
+        connection.rollback()
+        raise
+
+
 # =====================================================================
 # Alerts, forecasts and sign-in
 def check_login(email, password):
