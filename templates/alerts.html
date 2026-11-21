@@ -1,83 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  
-    <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alerts - DemandThread</title>
-
-  <!-- Stylesheets and Sidebar Layout -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../static/css/style.css">
-</head>
-
-<body>
-  <div class="layout">
-
-    <!--Sidebar navigation and alerts page header -->
-    <nav class="sidebar">
-      <p class="brand">Demand<span>Thread</span></p>
-      <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="sales_inventory.html">Sales and Inventory</a></li>
-        <li><a href="forecasts.html">Forecasts</a></li>
-        <li><a href="alerts.html" class="active">Alerts</a></li>
-        <li><a href="orders.html">Orders</a></li>
-        <li><a href="supplier_portal.html">Supplier Portal</a></li>
-      </ul>
-    </nav>
-
-    <div class="content">
-      
-      <!-- Topbar header and alerts content -->
-      <header class="topbar">
-        <span>Last updated: 28 Sep 2026, 07:30</span>
-        <span>Buyer View</span>
-      </header>
-
-     
-<main>
+{% extends "base.html" %}
+{% block title %}Alerts{% endblock %}
+{% block content %}
         <h1 class="page-title">Alerts</h1>
         <p class="page-subtitle">Products at risk of running out or carrying too much stock.</p>
 
-        <!-- Stockout risk alert cards -->
         <section>
-          <h2>Stockout risk (3)</h2>
+          <h2>Stockout risk ({{ stockout|length }})</h2>
+          {% for a in stockout %}
           <article class="card-box alert-card">
-            <h2>Light Blue Oversized Denim Jacket (DT-1001) <span class="badge text-bg-danger">High</span></h2>
-            <p>Sales up 15% on last week. Stock lasts about 5 days; supplier lead time is 18 days.</p>
+            <h2>{{ a.name }} ({{ a.sku }})
+              <span class="badge text-bg-{{ 'danger' if a.severity == 'High' else 'warning' }}">{{ a.severity }}</span></h2>
+            <p>Sales {{ '%+.0f'|format(a.change) }}% on last week. Stock (including orders) lasts about
+              {{ '%.0f'|format(a.cover_days) }} days; supplier lead time is {{ a.lead_time_days }} days.</p>
           </article>
-          <article class="card-box alert-card">
-            <h2>White Cotton Cropped T-Shirt (DT-1008) <span class="badge text-bg-warning">Medium</span></h2>
-            <p>Sales up 5% on last week. Stock lasts about 9 days; supplier lead time is 10 days.</p>
-          </article>
-          <article class="card-box alert-card">
-            <h2>Olive Green Relaxed-Fit Cargo Pants (DT-1003) <span class="badge text-bg-warning">Medium</span></h2>
-            <p>Sales up 27% on last week. Stock (including orders) lasts about 34 days; supplier lead time is 35 days.</p>
-          </article>
+          {% else %}
+          <p>No products are at risk of running out.</p>
+          {% endfor %}
         </section>
-
-        <!-- Excess stock alert cards -->
-        <section>
-          <h2>Excess stock (2)</h2>
-          <article class="card-box alert-card">
-            <h2>Black Quilted Puffer Vest (DT-1007) <span class="badge text-bg-danger">High</span></h2>
-            <p>Sales down 19% on last week. 11.4 weeks of stock on hand. Consider a markdown or pausing orders.</p>
-          </article>
-          <article class="card-box alert-card">
-            <h2>Cream Long-Sleeve Ribbed Knit Top (DT-1004) <span class="badge text-bg-warning">Medium</span></h2>
-            <p>Sales down 19% on last week. 8.9 weeks of stock on hand. Consider a markdown or pausing orders.</p>
-          </article>
-        </section>
-
-       
-      </main>
-
-
-      <!-- Footer and HTML structure closing -->
-      <footer>DemandThread - BFB 321 Group 23 - Sample data</footer>
-    </div>
-
-  </div>
-</body>
-</html>
+{% endblock %}
