@@ -71,6 +71,18 @@ def product_metrics():
 
 # =====================================================================
 # Alerts, forecasts and sign-in
+def check_login(email, password):
+    """The user if the email and password match, otherwise None."""
+    user = query_one("""
+        SELECT u.id, u.password_hash, u.role, u.supplier_id, s.name AS supplier
+        FROM users u
+        LEFT JOIN suppliers s ON s.id = u.supplier_id
+        WHERE u.email = %s
+    """, (email,))
+    if user and check_password_hash(user["password_hash"], password):
+        return user
+    return None
+
 # =====================================================================
 
 

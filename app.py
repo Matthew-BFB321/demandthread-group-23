@@ -41,6 +41,28 @@ def handle_error(error):
 
 # ---------------------------------------------------------------------
 # Sign in, alerts and forecasts
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        user = models.check_login(request.form.get("email", "").strip().lower(),
+                                  request.form.get("password", ""))
+        if user is None:
+            flash("Wrong email address or password.", "error")
+            return redirect(url_for("login"))
+        session["role"] = user["role"]
+        session["supplier_id"] = user["supplier_id"]
+        session["name"] = user["supplier"] or "Buyer"
+        flash(f"Signed in as {session['name']}.", "success")
+        return redirect("/")
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("You have been logged out", "success")
+    return redirect(url_for("login"))
+
 # ---------------------------------------------------------------------
 
 
