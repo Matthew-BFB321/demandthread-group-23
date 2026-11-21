@@ -39,6 +39,27 @@ def handle_error(error):
 # ---------------------------------------------------------------------
 
 
+@app.route("/sales", methods=["GET", "POST"])
+def sales_inventory():
+    """Show current inventory and handle sales submitted through the form."""
+    if request.method == "POST":
+        try:
+            product_id = int(request.form.get("product_id", ""))
+            quantity = int(request.form.get("quantity", ""))
+        except ValueError:
+            flash("Could not save sale: select a product and enter the quantity as a whole number.", "error")
+            return redirect(url_for("sales_inventory"))
+        success, message = models.record_sale(
+            product_id, quantity, request.form.get("channel", "")
+        )
+        flash(message, "success" if success else "error")
+        return redirect(url_for("sales_inventory"))
+
+    return render_template(
+        "sales_inventory.html", products=models.product_metrics()
+    )
+
+
 # ---------------------------------------------------------------------
 # Sign in, alerts and forecasts
 @app.route("/login", methods=["GET", "POST"])
