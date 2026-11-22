@@ -149,6 +149,13 @@ def list_alerts(status):
     products = [p for p in product_metrics() if p["status"] == status]
     return sorted(products, key=lambda p: p["severity"] != "High")
 
+def next_week_forecasts():
+    forecasts = []
+    for p in product_metrics():
+        forecast = sc.trend_forecast(p["sold_7"], p["sold_prev_7"])
+        forecasts.append(dict(name=p["name"], sold=p["sold_7"], forecast=forecast,
+                              trend=sc.trend_label(forecast, p["sold_7"])))
+    return forecasts
 
 # =====================================================================
 

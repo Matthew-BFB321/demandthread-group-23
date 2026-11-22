@@ -89,8 +89,12 @@ def logout():
 @app.route("/alerts")
 def alerts():
     return render_template("alerts.html",
-                           stockout=models.list_alerts("Stockout risk"),
-                           excess=models.list_alerts("Excess stock"))
+    stockout=models.list_alerts("Stockout risk"),
+    excess=models.list_alerts("Excess stock"))
+
+@app.route("/forecasts")
+def forecasts():
+    return render_template("forecasts.html", forecasts=models.next_week_forecasts())
 
 # ---------------------------------------------------------------------
 
