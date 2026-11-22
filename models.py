@@ -138,3 +138,18 @@ def list_alerts(status):
 # =====================================================================
 # Recommendations and purchase orders
 # =====================================================================
+
+
+def recommendations():
+    """This will return the products the model says to reorder with the recommended quantity."""
+    to_order = []
+    for prod in product_metrics():
+        if prod["needs_reorder"]:
+            # EOQ using annual demand and single unit annual holding cost
+            eoq = sc.calculate_eoq(prod["daily_demand"] * 365, sc.ORDERING_COST,
+                                   prod["price"] * sc.HOLDING_COST_RATE)
+            prod["quantity"] = sc.recommended_order_quantity(
+                prod["daily_demand"], prod["lead_time_days"], prod["safety_stock"],
+                prod["stock"], prod["on_order"], eoq)
+            to_order.append(prod)
+    return to_order

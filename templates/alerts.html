@@ -17,4 +17,21 @@
           <p>No products are at risk of running out.</p>
           {% endfor %}
         </section>
+
+          <section>
+          <h2>Excess stock ({{ excess|length }})</h2>
+          {% for a in excess %}
+          <article class="card-box alert-card">
+            <h2>{{ a.name }} ({{ a.sku }})
+              <span class="badge text-bg-{{ 'danger' if a.severity == 'High' else 'warning' }}">{{ a.severity }}</span></h2>
+            <p>Sales {{ '%+.0f'|format(a.change) }}% on last week. {{ '%.1f'|format(a.cover_days / 7) }} weeks
+              of stock on hand. Consider a markdown or pausing orders.</p>
+          </article>
+          {% else %}
+          <p>No products have excess stock.</p>
+          {% endfor %}
+        </section>
+
 {% endblock %}
+
+
