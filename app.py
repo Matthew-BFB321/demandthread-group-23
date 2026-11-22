@@ -104,5 +104,23 @@ def forecasts():
 # ---------------------------------------------------------------------
 
 
+@app.route("/orders", methods=["GET", "POST"])
+def orders():
+    """This shows the reorder recommendations, and creates a purchase order when one is approved."""
+    if request.method == "POST":
+        try:
+            # if the field is empty or not a whole number, int() would give an error so we deal with it with 'except'
+            product_id = int(request.form.get("product_id", ""))
+            quantity = int(request.form.get("quantity", ""))
+        except ValueError:
+            flash("Please select a product and enter a whole-number quantity.", "error")
+            return redirect(url_for("orders"))
+        ok, message = models.create_purchase_order(product_id, quantity,
+                                                   request.form.get("reason", "").strip())
+        flash(message, "success" if ok else "error")
+        return redirect(url_for("orders"))
+    return render_template("orders.html", recommendations=models.recommendations())
+
+
 if __name__ == "__main__":
     app.run(debug=app.config["DEBUG"])
