@@ -56,6 +56,12 @@ def product_create():
 
 # ---------------------------------------------------------------------
 # Alerts and forecasts
+
+@api.route("/alerts")
+def alerts():
+    return jsonify(stockout=models.list_alerts("Stockout risk"),
+                   excess=models.list_alerts("Excess stock"))
+
 # ---------------------------------------------------------------------
 
 
