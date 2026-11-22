@@ -94,7 +94,9 @@ def alerts():
 
 @app.route("/forecasts")
 def forecasts():
-    return render_template("forecasts.html", forecasts=models.next_week_forecasts())
+    return render_template("forecasts.html", forecasts=models.next_week_forecasts(),
+                           weeks=models.forecast_vs_actual(1))
+
 
 # ---------------------------------------------------------------------
 

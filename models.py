@@ -196,6 +196,19 @@ def next_week_forecasts():
                               trend=sc.trend_label(forecast, p["sold_7"])))
     return forecasts
 
+
+def forecast_vs_actual(product_id):
+    """Weekly units for the last 6 weeks (oldest first), each week compared
+    with the trend forecast made from the two weeks before it."""
+    sales = [units_sold(7 * (w + 1), 7 * w).get(product_id, 0) for w in range(5, -1, -1)]
+    weeks = []
+    for i in range(2, len(sales)):
+        forecast = sc.trend_forecast(sales[i - 1], sales[i - 2])
+        weeks.append(dict(weeks_ago=len(sales) - 1 - i, forecast=forecast, actual=sales[i],
+                          error=sc.forecast_error_percent(forecast, sales[i])))
+    return dict(weeks=weeks, next_forecast=sc.trend_forecast(sales[-1], sales[-2]),
+                mape=sc.mape([w["forecast"] for w in weeks], [w["actual"] for w in weeks]))
+
 # =====================================================================
 
 
