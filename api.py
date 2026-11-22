@@ -8,7 +8,11 @@ api = Blueprint("api", __name__, url_prefix="/api")
 # ---------------------------------------------------------------------
 # Dashboard
 # ---------------------------------------------------------------------
-
+@api.route("/kpis")
+def kpis():
+    stats = models.dashboard_stats()
+    stats.pop("products")
+    return jsonify(stats)
 
 # ---------------------------------------------------------------------
 # Products and sales
