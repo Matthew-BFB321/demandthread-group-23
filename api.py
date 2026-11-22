@@ -83,6 +83,11 @@ def alerts():
     return jsonify(stockout=models.list_alerts("Stockout risk"),
                    excess=models.list_alerts("Excess stock"))
 
+@api.route("/forecasts")
+def forecasts():
+    return jsonify(models.next_week_forecasts())
+
+
 # ---------------------------------------------------------------------
 
 
