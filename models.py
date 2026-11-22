@@ -153,3 +153,17 @@ def recommendations():
                 prod["stock"], prod["on_order"], eoq)
             to_order.append(prod)
     return to_order
+
+
+def create_purchase_order(product_id, quantity, notes):
+    """This will save an approved recommendation as a new purchase order with default status 'Placed'."""
+    if quantity <= 0:
+        return False, "The order quantity must be at least 1."
+    try:
+        # 'execute()' returns the new row's id, also used as the PO number
+        po_id = execute("INSERT INTO purchase_orders (product_id, quantity, notes) "
+                        "VALUES (%s, %s, %s)", (product_id, quantity, notes or None))
+        return True, f"Purchase order {po_id} has been created and sent to the supplier."
+    except pymysql.err.IntegrityError:
+        get_db().rollback()
+        return False, "The selected product does not exist."
