@@ -112,6 +112,24 @@ def record_sale(product_id, quantity, channel):
         raise
 
 
+def list_products(search, page, size):
+    """Find products by name and return the requested page."""
+    query = "SELECT id, sku, name, supplier_id, price, stock, lead_time_days FROM products WHERE 1=1"
+    parameters = []
+    if search:
+        query += " AND name LIKE %s"
+        parameters.append(f"%{search}%")
+    query += " ORDER BY sku LIMIT %s OFFSET %s"
+    parameters += [size, (page - 1) * size]
+    return query_all(query, parameters)
+
+
+def get_product(product_id):
+    """Find one product by its ID, returning None if it is missing."""
+    return query_one("SELECT id, sku, name, supplier_id, price, stock, lead_time_days, "
+                     "demand_std_dev FROM products WHERE id = %s", (product_id,))
+
+
 # =====================================================================
 # Alerts, forecasts and sign-in
 def check_login(email, password):
@@ -138,3 +156,32 @@ def list_alerts(status):
 # =====================================================================
 # Recommendations and purchase orders
 # =====================================================================
+
+
+def recommendations():
+    """This will return the products the model says to reorder with the recommended quantity."""
+    to_order = []
+    for prod in product_metrics():
+        if prod["needs_reorder"]:
+            # EOQ using annual demand and single unit annual holding cost
+            eoq = sc.calculate_eoq(prod["daily_demand"] * 365, sc.ORDERING_COST,
+                                   prod["price"] * sc.HOLDING_COST_RATE)
+            prod["quantity"] = sc.recommended_order_quantity(
+                prod["daily_demand"], prod["lead_time_days"], prod["safety_stock"],
+                prod["stock"], prod["on_order"], eoq)
+            to_order.append(prod)
+    return to_order
+
+
+def create_purchase_order(product_id, quantity, notes):
+    """This will save an approved recommendation as a new purchase order with default status 'Placed'."""
+    if quantity <= 0:
+        return False, "The order quantity must be at least 1."
+    try:
+        # 'execute()' returns the new row's id, also used as the PO number
+        po_id = execute("INSERT INTO purchase_orders (product_id, quantity, notes) "
+                        "VALUES (%s, %s, %s)", (product_id, quantity, notes or None))
+        return True, f"Purchase order {po_id} has been created and sent to the supplier."
+    except pymysql.err.IntegrityError:
+        get_db().rollback()
+        return False, "The selected product does not exist."
