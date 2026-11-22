@@ -24,4 +24,34 @@
             </table>
           </div>
         </section>
+
+
+         <section class="card-box">
+          <h2>Light Blue Oversized Denim Jacket: forecast vs actual (weekly units)</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Weeks ago</th>
+                  <th>Forecast</th>
+                  <th>Actual</th>
+                  <th>Error</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for w in weeks.weeks %}
+                <tr>
+                  <td>{{ w.weeks_ago }}</td>
+                  <td>{{ w.forecast }}</td>
+                  <td>{{ w.actual }}</td>
+                  <td>{{ '%+.0f'|format(w.error) }}%</td>
+                </tr>
+                {% endfor %}
+                <tr><td>Next week</td><td>{{ weeks.next_forecast }}</td><td>-</td><td>-</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted">Mean absolute percentage error (MAPE): {{ '%.1f'|format(weeks.mape) }}%</p>
+        </section>
+
 {% endblock %}
