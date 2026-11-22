@@ -48,4 +48,47 @@
     (in stock + on order) / average daily sales.
   </p>
 </section>
+
+<section class="card-box">
+  <h2>Record a sale</h2>
+  <form method="post" action="{{ url_for('sales_inventory') }}">
+    <div class="mb-3">
+      <label for="product_id" class="form-label">Product sold</label>
+      <select id="product_id" name="product_id" class="form-select" required>
+        <option value="">Select a product...</option>
+        {% for product in products %}
+        <option value="{{ product.id }}">
+          {{ product.name }} ({{ product.stock }} in stock)
+        </option>
+        {% endfor %}
+      </select>
+      <div class="form-text">
+        Select the product purchased. Current stock is shown beside its name.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="channel" class="form-label">Sales channel</label>
+      <select id="channel" name="channel" class="form-select" required>
+        <option>Store</option>
+        <option>Online</option>
+      </select>
+      <div class="form-text">
+        Choose whether the purchase was made in store or online.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Units sold</label>
+      <input type="number" id="quantity" name="quantity"
+             class="form-control" min="1" required>
+      <div class="form-text">
+        Enter a whole number of units, from 1 up to the available stock.
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save sale</button>
+  </form>
+</section>
+
 {% endblock %}
