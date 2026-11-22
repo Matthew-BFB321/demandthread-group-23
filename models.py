@@ -1,6 +1,7 @@
 """SQL + business rules app.py and api.py call functions"""
 
 import pymysql
+from decimal import Decimal, InvalidOperation
 from werkzeug.security import check_password_hash
 
 import supply_chain as sc
@@ -128,6 +129,44 @@ def get_product(product_id):
     """Find one product by its ID, returning None if it is missing."""
     return query_one("SELECT id, sku, name, supplier_id, price, stock, lead_time_days, "
                      "demand_std_dev FROM products WHERE id = %s", (product_id,))
+
+
+def create_product(data):
+    """Validate product details and save the product if the checks pass."""
+    sku = str(data.get("sku", "")).strip()
+    name = str(data.get("name", "")).strip()
+    if not sku or not name:
+        return False, "Could not save product: enter both a SKU and a product name."
+
+    try:
+        supplier_id = int(data.get("supplier_id", ""))
+        price = Decimal(str(data.get("price", "")))
+        stock = int(data.get("stock", 0))
+        lead_time_days = int(data.get("lead_time_days", ""))
+        demand_std_dev = Decimal(str(data.get("demand_std_dev", 0)))
+    except (ValueError, TypeError, InvalidOperation):
+        return False, (
+            "Could not save product: supplier_id, price, stock, "
+            "lead_time_days and demand_std_dev must contain valid numbers."
+        )
+
+    if price < 0 or stock < 0 or lead_time_days <= 0:
+        return False, (
+            "Could not save product: price and stock must be zero or above, "
+            "and lead_time_days must be greater than zero."
+        )
+
+    try:
+        execute("INSERT INTO products (sku, name, supplier_id, price, stock, "
+                "lead_time_days, demand_std_dev) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (sku, name, supplier_id, price, stock, lead_time_days, demand_std_dev))
+        return True, f"Saved product: {sku}."
+    except pymysql.err.IntegrityError:
+        get_db().rollback()
+        return False, (
+            "Could not save product: the SKU is already in use "
+            "or the selected supplier does not exist."
+        )
 
 
 # =====================================================================

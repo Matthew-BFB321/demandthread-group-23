@@ -45,6 +45,15 @@ def product(product_id):
     return jsonify(product_details)
 
 
+@api.route("/products", methods=["POST"])
+def product_create():
+    """Create a product from JSON and return the result with its status code."""
+    success, message = models.create_product(request.get_json(silent=True) or {})
+    if not success:
+        return jsonify(error="Bad Request", message=message), 400
+    return jsonify(message=message), 201
+
+
 # ---------------------------------------------------------------------
 # Alerts and forecasts
 # ---------------------------------------------------------------------
