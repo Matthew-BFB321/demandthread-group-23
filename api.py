@@ -54,6 +54,27 @@ def product_create():
     return jsonify(message=message), 201
 
 
+@api.route("/sales", methods=["POST"])
+def sale_create():
+    """Read sale details from JSON and return the result of recording the sale."""
+    sale_data = request.get_json(silent=True) or {}
+    try:
+        product_id = int(sale_data.get("product_id", ""))
+        quantity = int(sale_data.get("quantity", ""))
+    except (ValueError, TypeError):
+        return jsonify(
+            error="Bad Request",
+            message="Could not record sale: product_id and quantity must be whole numbers."
+        ), 400
+
+    success, message = models.record_sale(
+        product_id, quantity, sale_data.get("channel", "")
+    )
+    if not success:
+        return jsonify(error="Bad Request", message=message), 400
+    return jsonify(message=message), 201
+
+
 # ---------------------------------------------------------------------
 # Alerts and forecasts
 
