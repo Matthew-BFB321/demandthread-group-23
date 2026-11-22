@@ -17,6 +17,12 @@ api = Blueprint("api", __name__, url_prefix="/api")
 
 # ---------------------------------------------------------------------
 # Alerts and forecasts
+
+@api.route("/alerts")
+def alerts():
+    return jsonify(stockout=models.list_alerts("Stockout risk"),
+                   excess=models.list_alerts("Excess stock"))
+
 # ---------------------------------------------------------------------
 
 
