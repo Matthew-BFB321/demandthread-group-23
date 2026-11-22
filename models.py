@@ -112,6 +112,24 @@ def record_sale(product_id, quantity, channel):
         raise
 
 
+def list_products(search, page, size):
+    """Find products by name and return the requested page."""
+    query = "SELECT id, sku, name, supplier_id, price, stock, lead_time_days FROM products WHERE 1=1"
+    parameters = []
+    if search:
+        query += " AND name LIKE %s"
+        parameters.append(f"%{search}%")
+    query += " ORDER BY sku LIMIT %s OFFSET %s"
+    parameters += [size, (page - 1) * size]
+    return query_all(query, parameters)
+
+
+def get_product(product_id):
+    """Find one product by its ID, returning None if it is missing."""
+    return query_one("SELECT id, sku, name, supplier_id, price, stock, lead_time_days, "
+                     "demand_std_dev FROM products WHERE id = %s", (product_id,))
+
+
 # =====================================================================
 # Alerts, forecasts and sign-in
 def check_login(email, password):
