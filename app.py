@@ -32,7 +32,9 @@ def handle_error(error):
 # ---------------------------------------------------------------------
 # Dashboard
 # ---------------------------------------------------------------------
-
+@app.route("/")
+def dashboard():
+    return render_template("dashboard.html", stats=models.dashboard_stats())
 
 # ---------------------------------------------------------------------
 # Sales and inventory
