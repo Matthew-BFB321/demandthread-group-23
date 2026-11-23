@@ -1,5 +1,6 @@
 """SQL + business rules app.py and api.py call functions"""
 
+from datetime import date
 import pymysql
 from decimal import Decimal, InvalidOperation
 from werkzeug.security import check_password_hash
