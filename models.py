@@ -244,3 +244,25 @@ def create_purchase_order(product_id, quantity, notes):
     except pymysql.err.IntegrityError:
         get_db().rollback()
         return False, "The selected product does not exist."
+
+
+def list_purchase_orders(status="", supplier_id=None):
+    """This will return purchase orders with their product and supplier names, filtered by status or supplier if given."""
+    q = """
+        SELECT po.id, po.quantity, po.status, po.expected_delivery, po.notes,
+               po.created_at, p.name AS product, s.name AS supplier
+        FROM purchase_orders po
+        JOIN products p  ON p.id = po.product_id
+        JOIN suppliers s ON s.id = p.supplier_id
+        WHERE 1=1
+    """
+    args = []
+    # 'WHERE 1=1' is always true, so each filter below can just add "AND ..."
+    if status:
+        q += " AND po.status = %s"
+        args.append(status)
+    if supplier_id:
+        q += " AND p.supplier_id = %s"
+        args.append(supplier_id)
+    q += " ORDER BY po.id DESC"
+    return query_all(q, args)
