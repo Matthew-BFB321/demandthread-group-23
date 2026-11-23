@@ -266,3 +266,42 @@ def list_purchase_orders(status="", supplier_id=None):
         args.append(supplier_id)
     q += " ORDER BY po.id DESC"
     return query_all(q, args)
+
+
+STATUSES = ["Placed", "Confirmed", "In production", "Shipped", "Delivered"]
+
+
+def update_purchase_order(po_id, status, delivery, notes, supplier_id=None):
+    """This enables changing an order's status. 'Delivered' also adds the units to stock, so both happen or neither."""
+    if status not in STATUSES:
+        return False, "Please select a valid status."
+    try:
+        delivery = date.fromisoformat(delivery) if delivery else None
+    except ValueError:
+        return False, "The expected delivery date must be a date such as 2026-12-01."
+
+    db = get_db()
+    try:
+        with db.cursor() as c:
+            # 'FOR UPDATE' locks this order's row until commit or rollback, so two updates can't clash
+            c.execute("SELECT po.product_id, po.quantity, po.status, p.supplier_id "
+                      "FROM purchase_orders po JOIN products p ON p.id = po.product_id "
+                      "WHERE po.id = %s FOR UPDATE", (po_id,))
+            order = c.fetchone()
+            if order is None or (supplier_id and order["supplier_id"] != supplier_id):
+                db.rollback()
+                return False, "The selected order does not exist."
+            if order["status"] == "Delivered":
+                db.rollback()
+                return False, "This order has already been delivered."
+
+            c.execute("UPDATE purchase_orders SET status = %s, expected_delivery = %s, "
+                      "notes = %s WHERE id = %s", (status, delivery, notes or None, po_id))
+            if status == "Delivered":
+                c.execute("UPDATE products SET stock = stock + %s WHERE id = %s",
+                          (order["quantity"], order["product_id"]))
+        db.commit()
+        return True, f"Purchase order {po_id} has been updated to {status}."
+    except Exception:
+        db.rollback()
+        raise
