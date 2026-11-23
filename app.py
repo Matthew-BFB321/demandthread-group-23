@@ -124,5 +124,28 @@ def orders():
     return render_template("orders.html", recommendations=models.recommendations())
 
 
+@app.route("/supplier", methods=["GET", "POST"])
+def supplier_portal():
+    """This lets a signed-in supplier view their own orders and update one."""
+    # The sign-in saves the role in the session and anyone who isn't a supplier is sent to log in.
+    if session.get("role") != "supplier":
+        flash("Please sign in as a supplier to access the Supplier Portal.", "error")
+        return redirect("/login")
+    if request.method == "POST":
+        try:
+            po_id = int(request.form.get("po_id", ""))
+        except ValueError:
+            flash("Please select an order to update.", "error")
+            return redirect(url_for("supplier_portal"))
+        ok, message = models.update_purchase_order(
+            po_id, request.form.get("status", ""), request.form.get("delivery", ""),
+            request.form.get("notes", "").strip(), session["supplier_id"])
+        flash(message, "success" if ok else "error")
+        return redirect(url_for("supplier_portal"))
+    return render_template("supplier_portal.html",
+                           orders=models.list_purchase_orders(supplier_id=session["supplier_id"]),
+                           today=date.today())
+                           
+                           
 if __name__ == "__main__":
     app.run(debug=app.config["DEBUG"])

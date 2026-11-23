@@ -1,5 +1,6 @@
 """SQL + business rules app.py and api.py call functions"""
 
+from datetime import date
 import pymysql
 from decimal import Decimal, InvalidOperation
 from werkzeug.security import check_password_hash
@@ -244,3 +245,64 @@ def create_purchase_order(product_id, quantity, notes):
     except pymysql.err.IntegrityError:
         get_db().rollback()
         return False, "The selected product does not exist."
+
+
+def list_purchase_orders(status="", supplier_id=None):
+    """This will return purchase orders with their product and supplier names, filtered by status or supplier if given."""
+    q = """
+        SELECT po.id, po.quantity, po.status, po.expected_delivery, po.notes,
+               po.created_at, p.name AS product, s.name AS supplier
+        FROM purchase_orders po
+        JOIN products p  ON p.id = po.product_id
+        JOIN suppliers s ON s.id = p.supplier_id
+        WHERE 1=1
+    """
+    args = []
+    # 'WHERE 1=1' is always true, so each filter below can just add "AND ..."
+    if status:
+        q += " AND po.status = %s"
+        args.append(status)
+    if supplier_id:
+        q += " AND p.supplier_id = %s"
+        args.append(supplier_id)
+    q += " ORDER BY po.id DESC"
+    return query_all(q, args)
+
+
+STATUSES = ["Placed", "Confirmed", "In production", "Shipped", "Delivered"]
+
+
+def update_purchase_order(po_id, status, delivery, notes, supplier_id=None):
+    """This enables changing an order's status. 'Delivered' also adds the units to stock, so both happen or neither."""
+    if status not in STATUSES:
+        return False, "Please select a valid status."
+    try:
+        delivery = date.fromisoformat(delivery) if delivery else None
+    except ValueError:
+        return False, "The expected delivery date must be a date such as 2026-12-01."
+
+    db = get_db()
+    try:
+        with db.cursor() as c:
+            # 'FOR UPDATE' locks this order's row until commit or rollback, so two updates can't clash
+            c.execute("SELECT po.product_id, po.quantity, po.status, p.supplier_id "
+                      "FROM purchase_orders po JOIN products p ON p.id = po.product_id "
+                      "WHERE po.id = %s FOR UPDATE", (po_id,))
+            order = c.fetchone()
+            if order is None or (supplier_id and order["supplier_id"] != supplier_id):
+                db.rollback()
+                return False, "The selected order does not exist."
+            if order["status"] == "Delivered":
+                db.rollback()
+                return False, "This order has already been delivered."
+
+            c.execute("UPDATE purchase_orders SET status = %s, expected_delivery = %s, "
+                      "notes = %s WHERE id = %s", (status, delivery, notes or None, po_id))
+            if status == "Delivered":
+                c.execute("UPDATE products SET stock = stock + %s WHERE id = %s",
+                          (order["quantity"], order["product_id"]))
+        db.commit()
+        return True, f"Purchase order {po_id} has been updated to {status}."
+    except Exception:
+        db.rollback()
+        raise

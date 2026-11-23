@@ -94,3 +94,43 @@ def forecasts():
 # ---------------------------------------------------------------------
 # Recommendations and purchase orders
 # ---------------------------------------------------------------------
+
+
+@api.route("/recommendations")
+def recommendations():
+    """This returns the products the model says to reorder, with the recommended quantities (as JSON)."""
+    return jsonify(models.recommendations())
+
+
+@api.route("/purchase-orders")
+def purchase_orders():
+    """This returns the purchase orders as JSON, adding '?status=' to only get orders with that status."""
+    status = request.args.get("status", "").strip()
+    return jsonify(models.list_purchase_orders(status))
+
+
+@api.route("/purchase-orders", methods=["POST"])
+def purchase_order_create():
+    """This creates a purchase order from JSON. Returns 201 if it worked, or 400 with a message if it doesn't."""
+    data = request.get_json(silent=True) or {}
+    try:
+        product_id = int(data.get("product_id", ""))
+        quantity = int(data.get("quantity", ""))
+    except (ValueError, TypeError):
+        return jsonify(error="Bad Request", message="Both product_id and quantity must be whole numbers."), 400
+    ok, message = models.create_purchase_order(product_id, quantity, data.get("notes", ""))
+    if not ok:
+        return jsonify(error="Bad Request", message=message), 400
+    return jsonify(message=message), 201
+
+
+@api.route("/purchase-orders/<int:po_id>", methods=["PATCH"])
+def purchase_order_update(po_id):
+    """This changes an order's status, delivery date and notes from JSON. Delivered also adds the units to stock."""
+    data = request.get_json(silent=True) or {}
+    ok, message = models.update_purchase_order(po_id, data.get("status", ""),
+                                               data.get("expected_delivery", ""),
+                                               data.get("notes", ""))
+    if not ok:
+        return jsonify(error="Bad Request", message=message), 400
+    return jsonify(message=message)

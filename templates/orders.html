@@ -36,4 +36,30 @@
             </table>
           </div>
         </section>
+
+        <section class="card-box">
+          <h2>Approve a recommendation</h2>
+          <!-- The user can accept the recommended quantity, or change it with a reason. -->
+          <form method="post" action="{{ url_for('orders') }}">
+            <div class="mb-3">
+              <label for="product_id" class="form-label">Product to reorder</label>
+              <select id="product_id" name="product_id" class="form-select" required>
+                <option value="">Select a product...</option>
+                {% for rec in recommendations %}
+                <option value="{{ rec.id }}">{{ rec.name }} (recommended {{ rec.quantity }})</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="quantity" class="form-label">Quantity to order</label>
+              <input type="number" id="quantity" name="quantity" class="form-control" min="10" step="10" required>
+              <p class="text-muted">Orders must be at least 10 units, in multiples of 10.</p>
+            </div>
+            <div class="mb-3">
+              <label for="reason" class="form-label">Reason for changing the recommended quantity (optional)</label>
+              <textarea id="reason" name="reason" class="form-control" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-dark">Approve and send order</button>
+          </form>
+        </section>
 {% endblock %}
