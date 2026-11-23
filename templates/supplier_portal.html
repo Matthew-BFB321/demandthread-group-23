@@ -36,4 +36,41 @@
             </table>
           </div>
         </section>
+
+        <section class="card-box">
+          <h2>Update an order</h2>
+          <!-- Delivered orders excluded (they can't be changed any more). -->
+          <form method="post" action="{{ url_for('supplier_portal') }}">
+            <div class="mb-3">
+              <label for="po_id" class="form-label">Order to update</label>
+              <select id="po_id" name="po_id" class="form-select" required>
+                <option value="">Select an order...</option>
+                {% for order in orders %}
+                {% if order.status != 'Delivered' %}
+                <option value="{{ order.id }}">{{ 'PO-%04d'|format(order.id) }} - {{ order.product }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="status" class="form-label">New status</label>
+              <select id="status" name="status" class="form-select" required>
+                <option value="">Select a status...</option>
+                <option>Confirmed</option>
+                <option>In production</option>
+                <option>Shipped</option>
+                <option>Delivered</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="delivery" class="form-label">Expected delivery date</label>
+              <input type="date" id="delivery" name="delivery" class="form-control" min="{{ today }}" required>
+            </div>
+            <div class="mb-3">
+              <label for="notes" class="form-label">Notes for the DemandThread buyer (optional)</label>
+              <textarea id="notes" name="notes" class="form-control" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-dark">Save order update</button>
+          </form>
+        </section>
 {% endblock %}
