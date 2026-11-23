@@ -94,3 +94,16 @@ def forecasts():
 # ---------------------------------------------------------------------
 # Recommendations and purchase orders
 # ---------------------------------------------------------------------
+
+
+@api.route("/recommendations")
+def recommendations():
+    """This returns the products the model says to reorder, with the recommended quantities (as JSON)."""
+    return jsonify(models.recommendations())
+
+
+@api.route("/purchase-orders")
+def purchase_orders():
+    """This returns the purchase orders as JSON, adding '?status=' to only get orders with that status."""
+    status = request.args.get("status", "").strip()
+    return jsonify(models.list_purchase_orders(status))
