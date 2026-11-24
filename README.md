@@ -14,34 +14,34 @@ BFB 321 Supply Chain Technologies · Final Project · **Group 23**
 
 ## Purpose
 
-DemandThread helps a fast-fashion retailer see store and online sales as they happen. It flags products at risk of a stockout or holding excess stock, and recommends when and how much to reorder. The buyer approves orders, and suppliers update them in their own portal.
+DemandThread helps a fast-fashion retailer see store and online sales as they happen. It flags any products that are at risk of going out of stock or that will be in excess. It also recommends when and how much to reorder. The buyer can approve orders, and suppliers update the orders in their own portal.
 
 ## Structure
 
-Page routes are in `app.py`, the JSON API is a Flask Blueprint in `api.py`, all SQL is in `models.py`, and the database connection is in `db.py`. The supply chain model is in `supply_chain.py`.
+Routes to pages are in `app.py`, the JSON API is a Flask Blueprint in `api.py`, all SQL is in `models.py`, and the database connection is in `db.py`. The model for the supply chain is in `supply_chain.py`.
 
 ## Database
 
 ![ERD](docs/erd.png)
 
-Five tables: **suppliers**, **products** (each belongs to a supplier), **sales** and **purchase_orders** (each belongs to a product), and **users** (buyer or supplier sign-ins). All relationships are one-to-many. Alerts, forecasts and reorder quantities are calculated by `supply_chain.py`, not stored.
+Five tables: **suppliers**, **products** (each one belongs to a supplier), **sales** and **purchase_orders** (each one belongs to a product), and **users** (buyer or supplier can sign in). All relationships are one-to-many. Alerts, forecasts and reorder quantities are calculated by `supply_chain.py`.
 
-## Setup (Windows, from a clean MySQL install)
+## Setup (Windows)
 
-You need Python 3.10+, Git and MySQL Server 8 with MySQL Workbench.
+You need Python, Git and MySQL Server 8 with MySQL Workbench.
 
-1. Clone the repository and open the folder:
+1. First, clone the repository and open the folder:
    ```
    git clone https://github.com/Matthew-BFB321/demandthread-group-23.git
    cd demandthread-group-23
    ```
-2. Create and activate a virtual environment, then install the packages:
+2. Make and then activate a virtual environment, before installing the following:
    ```
    python -m venv venv
    venv\Scripts\activate
    pip install -r requirements.txt
    ```
-3. Create the empty database. In MySQL Workbench, connect to your local server and run:
+3. Create the empty database, then in MySQL Workbench, connect to your local server and run:
    ```sql
    CREATE DATABASE demandthread;
    ```
@@ -49,7 +49,7 @@ You need Python 3.10+, Git and MySQL Server 8 with MySQL Workbench.
    ```
    copy .env.example .env
    ```
-   Then open `.env` and set `DB_PASSWORD` to your MySQL root password.
+   Then open `.env` and set `DB_PASSWORD` to your root password for MySQL.
 5. Build the tables and load the sample data:
    ```
    python init_db.py
@@ -89,14 +89,14 @@ All endpoints return JSON. Errors return `{"error": "...", "message": "..."}` wi
 
 ## Configuration and logging
 
-`config.py` has development, testing and production settings, chosen by `APP_ENV` in `.env`. Errors are logged to `app.log`.
+`config.py` has development, testing and production settings. These are chosen by `APP_ENV` in `.env`. Errors get logged to `app.log`.
 
 ## Reset, backup and rollback
 
-- **Reset** to the sample data (deletes all your data): `python init_db.py --reset`
-- **Back up** before any change: `mysqldump -u root -p demandthread > backup.sql`
-- **Restore**: `mysql -u root -p demandthread < backup.sql`
-- **Roll back a failed change**: restore the last `backup.sql`, or `git revert <commit>` for a code change.
+- **To reset to the sample data:** `python init_db.py --reset`
+- **To back up before any changes:** `mysqldump -u root -p demandthread > backup.sql`
+- **To restore data:** `mysql -u root -p demandthread < backup.sql`
+- **To undo failed changes (roll back):** restore the last `backup.sql`, or `git revert <commit>` for a code change.
 
 ## Task allocation
 
